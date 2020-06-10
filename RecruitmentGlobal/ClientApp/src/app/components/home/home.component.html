@@ -1,0 +1,106 @@
+<div class="row padding-top">
+  <div class="col-lg-3 col-sm-12 col-xs-12 col-xl-3 col-md-3">
+    <div class="e-card e-custom-card bg-1">
+      <div class="e-card-header ">
+        <div class="e-card-header-caption">
+          <div class="e-card-header-title">
+            <h5>India Recruitment</h5>
+          </div>
+        </div>
+      </div>
+      <div class="e-card-content">
+        <h6>Click see the India Openings</h6>
+      </div>
+      <div class="e-card-actions">
+        <button
+          class="btn btn-primary"
+          *ngIf="!checkUserLoggedIn()"
+          (click)="Login('in')"
+        >
+          Log In
+        </button>
+        <button
+          class="btn btn-primary"
+          *ngIf="checkUserLoggedIn()"
+          (click)="view('in')"
+        >
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-1 col-sm-12 col-xs-12 col-xl-1 col-md-1">
+    <br>
+  </div>
+
+  <div class="col-lg-3 col-sm-12 col-xs-12 col-xl-3 col-md-3">
+   
+    <div class="e-card e-custom-card bg-1 text-white">
+      <div class="e-card-header">
+        <div class="e-card-header-caption">
+          <div class="e-card-header-title">
+            <h5>Global Recruitment</h5>
+          </div>
+        </div>
+      </div>
+      <div class="e-card-content">
+        <h6>Click see the Global Openings</h6>
+      </div>
+      <div class="e-card-actions">
+        <button
+          class="btn btn-primary"
+          *ngIf="!checkUserLoggedIn()"
+          (click)="Login('gl')"
+        >
+          Log In
+        </button>
+        <button
+          class="btn btn-primary"
+          *ngIf="checkUserLoggedIn()"
+          (click)="view('gl')"
+        >
+          View
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-1 col-sm-12 col-xs-12 col-xl-1 col-md-1">
+    <br>
+  </div>
+  <div class="col-lg-4 col-sm-12 col-xs-12 col-xl-4 col-md-4">
+    <div class="e-card e-custom-card bg-1 text-white">
+      <div class="e-card-header">
+        <div class="e-card-header-caption">
+          <div class="e-card-header-title">
+            <h5>All Job postions</h5>
+          </div>
+        </div>
+      </div>
+      <div class="e-card-content">
+        <h6>Click to View , Create and Edit Openings</h6>
+      </div>
+      <div class="e-card-actions">
+        <button
+          class="btn btn-primary"
+          *ngIf="!checkUserLoggedIn()"
+          (click)="Login('all')"
+        >
+          Log In
+        </button>
+        <button
+          class="btn btn-primary"
+          *ngIf="checkUserLoggedIn()"
+          (click)="view('all')"
+        >
+          view
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="custom-div-gap"></div>
+<div>
+
+<img #img src="../../../assets/recruitcare-logo.png" style="height: 100px;" />
+</div>
+<app-recruit-care></app-recruit-care>

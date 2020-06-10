@@ -1,0 +1,19 @@
+<div class = "e-card e-custom-card bg-1">                   
+	<div class="e-card-header">          
+		<div class="e-card-header-caption">    
+			<div class="e-card-header-title"></div>   
+		</div>
+		<div class="e-card-content">
+			<mat-dialog-content>
+				<p>
+					{{message}}
+				</p>
+			</mat-dialog-content>
+			<mat-dialog-actions align="center">
+				<button mat-raised-button class="btn btn-primary" (click)="onConfirmClick()" tabindex="1">{{confirmButtonText}}</button> &nbsp;&nbsp;
+				<button mat-raised-button mat-dialog-close class="btn btn-secondary"  tabindex="-1">{{cancelButtonText}}</button>
+			</mat-dialog-actions>
+		</div>
+	</div>
+</div>
+

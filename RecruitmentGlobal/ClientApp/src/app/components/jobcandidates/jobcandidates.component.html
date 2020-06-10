@@ -1,0 +1,62 @@
+<ejs-grid #grid [dataSource]='candidates' [toolbar]='toolbar' [editSettings]='editSettings'
+[allowExcelExport]='true' (toolbarClick)='toolbarClick($event)' [allowSorting]='true' (recordDoubleClick)="rowClick($event)">
+    <e-columns>
+        <e-column width="60" *ngIf="canEditOrAdd">
+            <ng-template #template  let-data>
+               <!-- <img src="../../../assets/edit-black-18dp.svg" (click)="Edit(data)"> -->
+            
+                <span (click)="Edit(data)"><i class="fa fa-edit"></i></span>
+            </ng-template>
+        </e-column>
+        <e-column field='firstName' headerText='First Name' width="150" >
+         
+        </e-column>
+        <e-column field='lastName' headerText="Last Name" width="150">
+         
+        </e-column>
+        <e-column field='middleName' headerText='Middle Name' width="150"></e-column>
+        <e-column field='phone' headerText='Phone' width="150">
+            
+         
+        </e-column>
+        <e-column field='statusName' headerText='Status' width="150">
+
+             </e-column>
+        <e-column field='email' headerText='Email' width="150">
+
+        </e-column>
+        <e-column field="createdByName" headerText="Created By" width="200"></e-column>
+        <e-column field="createdDate" headerText="Created Date" width="200">
+          <ng-template let-data>
+            {{ data.createdDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+          </ng-template>
+        </e-column>
+        <e-column field="modifiedName" headerText="Modified By" width="200"></e-column>
+        <e-column field="modifiedDate" headerText="Modified Date" width="200">
+          <ng-template let-data>
+            {{ data.modifedDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+          </ng-template>
+        </e-column>
+        <e-column field='resume' headerText='Resume' width="200">
+          <ng-template #template  let-data>
+            <button type="button" class="btn btn-link" (click)="getResume(data)"  *ngIf="data.fileName != '' && data.fileName != undefined">{{ data.fileName }}</button>
+        </ng-template>
+        </e-column>
+        <e-column field="stateName" headerText="State" width="200">
+        </e-column>
+        <e-column field="cityName" headerText="City" width="200">
+        </e-column>
+        <e-column field="totalExpName" headerText="Total Experience" width="200">
+        </e-column>
+        <e-column field="relavantExpName" headerText="Relavant Experience" width="200">
+        </e-column>
+        <e-column field="bestWayToReachName" headerText="Best Way to Reach" width="200">
+        </e-column>
+        <e-column field="visaTypeName" headerText="VISA Type" width="200">
+        </e-column>
+        <e-column field="highestQualificationName" headerText="Highest qualification" width="200">
+        </e-column>
+      
+    </e-columns>
+     </ejs-grid>
+     

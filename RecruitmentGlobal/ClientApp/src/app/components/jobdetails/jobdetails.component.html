@@ -1,0 +1,121 @@
+<div class="e-custom-card bg-1 custom-padding" *ngIf="job">
+  <h5>
+    {{ job.jobtitle }}
+    <span style="float: right;">
+      <b>Company : </b>
+      <a [href]="job.company_url">{{ job.client }}</a></span
+    >
+  </h5>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="country"><b>Country</b></label>
+        {{ job.country }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="created"><b>Created By</b></label>
+        {{ job.createdBy }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="assaigned"><b>Assaigned To</b></label>
+        {{ job.assaigned }}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="target"><b>Target Date</b></label>
+        {{ job.targetDate }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="status"><b>Job Status</b></label>
+        {{ job.status }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="contact"><b>Contact Name</b></label>
+        {{ job.contactName }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="jobtype"><b>Job Type</b></label>
+        {{ job.jobtype }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="industry"><b>Industry</b></label>
+        {{ job.industry }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="industry"><b>Industry</b></label>
+        {{ job.industry }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="country"><b>Country</b></label>
+        {{ job.country }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="state"><b>State</b></label>
+        {{ job.state }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="city"><b>City</b></label>
+        {{ job.city }}
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="zip"><b>Zip Code</b></label>
+        {{ job.zip }}
+      </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-lg-4 col-xs-12 col-xl-3">
+      <div class="form-group">
+        <label for="salary"><b>Salary</b></label>
+        {{ job.salary }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="custom-div-gap"></div>
+<div class="e-custom-card bg-1 custom-padding" *ngIf="job">
+  <h5>Description</h5>
+  <div [innerHTML]="job.description" class="card-text"></div>
+</div>
+  <div class="custom-div-gap"></div>
+  <div class="e-custom-card bg-1 custom-padding padding-bottom" *ngIf="job">
+      <app-jobcandidates
+      [candidates]="job.candidates"
+      [jobid]="job.id"
+      [canEditOrAdd]="false"
+    ></app-jobcandidates>
+  </div>
+
+

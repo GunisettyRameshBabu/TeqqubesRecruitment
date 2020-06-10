@@ -1,0 +1,74 @@
+<div class="e-card e-custom-card bg-1">
+  <div class="e-card-header">
+    <div class="e-card-header-caption">
+      <div class="e-card-header-title">
+        <h5>Add / Edit Master Data</h5>
+      </div>
+      <div class="e-card-content">
+        <form
+          class="example-form"
+          [formGroup]="masterGroup"
+          autocomplete="off"
+          novalidate
+          fxLayout="column wrap"
+          fxLayoutAlign="center center"
+          fxLayoutGap="10px"
+          (ngSubmit)="onSubmit()"
+        >
+          <div class="row">
+            <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+              <mat-form-field>
+                <mat-label>Name *</mat-label>
+                <input matInput placeholder="Name" formControlName="name" />
+                <mat-error *ngIf="hasError('name', 'required')"
+                  >Name is required</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+              <mat-form-field>
+                <mat-label>Master Data Type *</mat-label>
+                <mat-select formControlName="type">
+                  <mat-option *ngFor="let i of dataTypes" [value]="i.id">
+                    {{ i.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="hasError('type', 'required')"
+                  >Name is required</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+              <div
+                class="btn-toolbar float-right"
+                role="toolbar"
+                aria-label="Toolbar with button groups"
+              >
+                <div
+                  class="btn-group mr-2"
+                  role="group"
+                  aria-label="First group"
+                >
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="cancel()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                <div
+                  class="btn-group mr-2"
+                  role="group"
+                  aria-label="Second group"
+                >
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

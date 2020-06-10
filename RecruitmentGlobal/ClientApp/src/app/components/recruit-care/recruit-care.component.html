@@ -1,0 +1,101 @@
+<div class="e-custom-card bg-1 custom-padding padding-bottom">
+
+
+  <ejs-grid
+    #grid
+    [dataSource]="candidates"
+    [toolbar]="toolbar"
+    [editSettings]="editSettings"
+    [allowExcelExport]="true"
+    (toolbarClick)="toolbarClick($event)"
+    [enableHover]="false"
+    [allowSelection]="true"
+    [selectionSettings]="selectOptions"
+    (checkboxChange)="checkboxChange($event)"
+    [allowSorting]="true"
+    (recordDoubleClick)="rowClick($event)"
+  >
+    <e-columns>
+      <e-column type="checkbox" width="50"></e-column>
+      <e-column width="60">
+        <ng-template #template let-data>
+          <!-- <img src="../../../assets/edit-black-18dp.svg" (click)="edit(data)">
+                -->
+          <span (click)="edit(data)"><i class="fa fa-edit"></i></span>
+        </ng-template>
+      </e-column>
+      <e-column width="60">
+        <ng-template #template let-data>
+          <img src="../../../assets/move.svg" (click)="openDialog(data)" />
+        </ng-template>
+      </e-column>
+
+      <e-column isPrimaryKey="true" field="id" visible="false"> </e-column>
+      <e-column width="200" field="jobName" headerText="Job ID"> </e-column>
+      <e-column field="name" headerText="Name" width="200"> </e-column>
+
+      <e-column field="phone" headerText="Phone" width="200"> </e-column>
+      <e-column field="statusName" headerText="Status" width="200"> </e-column>
+      <e-column
+        field="createdByName"
+        headerText="Created By"
+        width="200"
+      ></e-column>
+      <e-column field="createdDate" headerText="Created Date" width="200">
+        <ng-template let-data>
+          {{ data.createdDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+        </ng-template>
+      </e-column>
+      <e-column
+        field="modifiedName"
+        headerText="Modified By"
+        width="200"
+      ></e-column>
+      <e-column field="modifiedDate" headerText="Modified Date" width="200">
+        <ng-template let-data>
+          {{ data.modifiedDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+        </ng-template>
+      </e-column>
+      <e-column field="notice" headerText="Notice Period" width="200">
+      </e-column>
+      <e-column field="fileName" headerText="Resume" width="200">
+        <ng-template #template let-data>
+          <button
+            type="button"
+            class="btn btn-link"
+            (click)="getResume(data)"
+            *ngIf="data.fileName != '' && data.fileName != undefined"
+          >
+            {{ data.fileName }}
+          </button>
+        </ng-template>
+      </e-column>
+      <e-column field="email" headerText="Email" width="200"> </e-column>
+      <e-column field="comments" headerText="Comment" width="200"> </e-column>
+      <e-column field="stateName" headerText="State" width="200"> </e-column>
+      <e-column field="cityName" headerText="City" width="200"> </e-column>
+      <e-column field="totalExpName" headerText="Total Experience" width="200">
+      </e-column>
+      <e-column
+        field="relavantExpName"
+        headerText="Relavant Experience"
+        width="200"
+      >
+      </e-column>
+      <e-column
+        field="bestWayToReachName"
+        headerText="Best Way to Reach"
+        width="200"
+      >
+      </e-column>
+      <e-column field="visaTypeName" headerText="VISA Type" width="200">
+      </e-column>
+      <e-column
+        field="highestQualificationName"
+        headerText="Highest qualification"
+        width="200"
+      >
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+</div>

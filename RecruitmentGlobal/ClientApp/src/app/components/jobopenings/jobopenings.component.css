@@ -1,0 +1,27 @@
+.gutter-top {
+    padding-top: 25px;
+}
+
+.card-deck{
+    bottom-margin: 10px;
+}
+
+.float-right {
+    float: right !important;
+}
+
+mat-card-title {
+    width: 100% !important;
+    color: white;
+}
+
+.jumbotron {
+    background-image: url('../../../assets/graphs-job-laptop-papers-590016.jpg');
+    background-size: cover;
+    padding-top: 5%;
+}
+
+.e-card {
+    margin-top: 5%;
+}
+

@@ -1,0 +1,30 @@
+#dashboard {
+    height: 97%;
+    max-height: 97%;
+    margin-top: 5%;
+}
+
+.e-card {
+    min-height: 25%;
+}
+
+.control-section {
+    margin: 0 auto;
+    padding-top: 1%;
+    padding-bottom: 0px;
+}
+
+#defaultLayout {
+    padding: 10px;
+}
+
+#defaultLayout .e-panel .e-panel-container {
+    vertical-align: middle;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+}
+
+.text-align {
+    line-height: 90px;
+}

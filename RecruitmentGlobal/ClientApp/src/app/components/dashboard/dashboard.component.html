@@ -1,0 +1,77 @@
+<div class="e-custom-card bg-1 custom-padding">
+<div class="row padding-top">
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+            <mat-label>Candidate </mat-label>
+            <mat-select
+              [(ngModel)]="searchModel.recruiter"
+            >
+            <mat-option [value]="0">
+                All
+            </mat-option>
+              <mat-option *ngFor="let i of recruiters" [value]="i.id">
+                {{ i.name }}
+              </mat-option>
+            </mat-select>
+           
+          </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+            <mat-label>Date from</mat-label>
+            <input
+              matInput
+              [max]="minDate"
+              [matDatepicker]="picker"
+              [(ngModel)]="searchModel.dateFrom"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="picker"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+            <mat-label>Date To</mat-label>
+            <input
+              matInput
+              [max]="minDate"
+              [matDatepicker]="pickerto"
+              [(ngModel)]="searchModel.dateTo"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="pickerto"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #pickerto></mat-datepicker>
+          </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <button class="btn btn-primary" (click)="filter()">Search</button>
+    </div>
+</div>
+</div>
+<div class="custom-div-gap"></div>
+<div class="row" >
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3" (click)="showDetails(i)" *ngFor="let i of data">
+        <div [class] = "i.style">                   
+            <div class="e-card-header">          
+                <div class="e-card-header-caption">   
+                    <div class="e-card-header-title">
+                        <h3>{{ i.Key }}</h3>
+                        <div class="e-card-content"> 
+                           <h3>{{ i.Value.Value }}</h3>    
+                        </div> 
+                    </div>   
+                </div>
+                        
+            </div>
+        </div>
+        <br/>
+    </div>
+   
+</div>
+
+<app-user-logs></app-user-logs>

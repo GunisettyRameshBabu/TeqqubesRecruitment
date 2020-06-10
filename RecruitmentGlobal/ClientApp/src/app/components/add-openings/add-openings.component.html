@@ -1,0 +1,271 @@
+<form
+  [formGroup]="jobGroup"
+  (ngSubmit)="onSubmit()"
+  autocomplete="off"
+  novalidate
+  class="padding-top"
+>
+  <div class="e-custom-card bg-1 custom-padding">
+    <h5>Basic Information</h5>
+    <div class="row">
+      <div class="col-md-9 col-sm-12 col-xs-12 col-lg-9 col-xlg-9">
+        <mat-form-field>
+          <mat-label>Job Title *</mat-label>
+          <input matInput placeholder="Job Title" formControlName="jobtitle" />
+          <mat-error *ngIf="hasError('jobtitle', 'required')"
+            >Title is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3`">
+        <mat-form-field>
+          <mat-label>Job Status *</mat-label>
+          <mat-select formControlName="status">
+            <mat-option *ngFor="let i of statuses" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('status', 'required')"
+            >Title is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 col-sm-3 col-xs-12 col-lg-4 col-xlg-4">
+        <mat-form-field>
+          <mat-label>Industry</mat-label>
+          <mat-select formControlName="industry">
+            <mat-option *ngFor="let i of industries" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('industry', 'required')"
+            >Industry is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-4 col-sm-3 col-xs-12 col-lg-4 col-xlg-4">
+        <mat-form-field>
+          <mat-label>Choose Target Date</mat-label>
+          <input
+            matInput
+            [min]="minDate"
+            [matDatepicker]="picker"
+            formControlName="targetdate"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4 col-sm-3 col-xs-12 col-lg-4 col-xlg-4">
+        <mat-form-field>
+          <mat-label>Job Code *</mat-label>
+          <input
+            matInput
+            placeholder="Job Code"
+            readonly
+            formControlName="jobid"
+          />
+          <mat-error *ngIf="hasError('jobid', 'required')"
+            >Title is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Country *</mat-label>
+          <mat-select
+            formControlName="country"
+            (selectionChange)="countryChanged()"
+          >
+            <mat-option *ngFor="let i of countries" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('country', 'required')"
+            >Country is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>State *</mat-label>
+          <mat-select
+            formControlName="state"
+            (selectionChange)="stateChanged()"
+          >
+            <mat-option *ngFor="let i of states" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('state', 'required')"
+            >Title is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>City *</mat-label>
+          <mat-select formControlName="city">
+            <mat-option *ngFor="let i of cities" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('city', 'required')"
+            >City is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Zip Code *</mat-label>
+          <input matInput placeholder="Zip Code" formControlName="zip" />
+          <mat-error *ngIf="hasError('zip', 'required')"
+            >Zip Code is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="custom-div-gap"></div>
+  <div class="e-custom-card bg-1 custom-padding">
+    <h5>Job Details</h5>
+
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Job Type</mat-label>
+          <mat-select formControlName="jobtype">
+            <mat-option *ngFor="let i of jobtypes" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('jobtype', 'required')"
+            >Job Type is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Client</mat-label>
+          <mat-select formControlName="client">
+            <mat-option *ngFor="let i of clients" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('client', 'required')"
+            >Client is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-slide-toggle formControlName="isclientConfidencial"
+          >Is Client Name Visible</mat-slide-toggle
+        >
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Experience</mat-label>
+          <mat-select formControlName="experience">
+            <mat-option *ngFor="let i of experiences" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('experience', 'required')"
+            >Experience is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Assaigned Recruiter</mat-label>
+          <mat-select formControlName="assaignedTo">
+            <mat-option *ngFor="let i of users" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Contact Name</mat-label>
+          <mat-select formControlName="contactName">
+            <mat-option *ngFor="let i of users" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Account Manager</mat-label>
+          <mat-select formControlName="accountManager">
+            <mat-option *ngFor="let i of users" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="custom-div-gap"></div>
+  <div class="e-custom-card bg-1 custom-padding">
+    <h5>About the postition</h5>
+    <mat-form-field>
+      <mat-label>About position</mat-label>
+      <textarea
+        matInput
+        placeholder="Ex. ......."
+        formControlName="description"
+        style="min-height: 150px;"
+      ></textarea>
+      <mat-error *ngIf="hasError('description', 'required')"
+        >About position is required</mat-error
+      >
+    </mat-form-field>
+  </div>
+  <div class="custom-div-gap"></div>
+  <div class="e-custom-card bg-1 custom-padding" *ngIf="job">
+    <app-jobcandidates
+      [candidates]="candidates"
+      [jobid]="job.id"
+      [canEditOrAdd]="true"
+    ></app-jobcandidates>
+  </div>
+  <div class="custom-div-gap"></div>
+  <div class="row padding-bottom">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
+      <div
+        class="btn-toolbar float-right"
+        role="toolbar"
+        aria-label="Toolbar with button groups"
+      >
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">
+            Cancel
+          </button>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,35 @@
+
+.nav-item{
+    padding:2px;
+    margin-left: 7px;
+}
+
+.center {
+    margin: auto;
+    width: 100%;
+    padding: 10px;
+  }
+
+.text-White {
+    color: white;
+}
+
+.float-right {
+    float: right;
+}
+
+.header-bg {
+    background-image: url(../../../../assets/41.png);
+    background-size: cover;
+}
+
+.nav-link {
+    font-weight: bold;
+}
+
+#nav {
+    background-image: url(../../../../assets/AppLogo.jpeg);
+    background-size: cover;
+}
+
+

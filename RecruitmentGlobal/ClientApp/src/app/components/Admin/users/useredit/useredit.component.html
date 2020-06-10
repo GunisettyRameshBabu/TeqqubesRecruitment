@@ -1,0 +1,269 @@
+
+  <form *ngIf="user.id == undefined"
+    class="example-form"
+    [formGroup]="userGroup"
+    (ngSubmit)="onSubmit()"
+    autocomplete="off"
+    novalidate
+    fxLayout="column wrap"
+    fxLayoutAlign="center center"
+    fxLayoutGap="10px"
+  >
+
+  <div class="e-custom-card bg-1 custom-padding">
+    <h5>Add User</h5>
+        <div class="row">
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>First Name *</mat-label>
+              <input
+                matInput
+                placeholder="First name"
+                formControlName="firstName"
+              />
+              <mat-error *ngIf="hasError('firstName', 'required')"
+                >First name is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>Middle Name </mat-label>
+              <input
+                matInput
+                placeholder="Middle name"
+                formControlName="middleName"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>Last Name *</mat-label>
+              <input
+                matInput
+                placeholder="Last name"
+                formControlName="lastName"
+              />
+              <mat-error *ngIf="hasError('lastName', 'required')"
+                >Last name is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>Email *</mat-label>
+              <input matInput placeholder="Email" formControlName="email" />
+              <mat-error *ngIf="hasError('email', 'required')"
+                >Email is required</mat-error
+              >
+              <mat-error *ngIf="hasError('email', 'email')"
+                >Please enter valid email</mat-error
+              >
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>Password *</mat-label>
+              <input
+                matInput
+                placeholder="Password"
+                type="password"
+                formControlName="password"/>
+              <mat-error *ngIf="hasError('password', 'required')">Password is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>Reenter Password *</mat-label>
+              <input
+                matInput
+                placeholder="Password"
+                type="password"
+                formControlName="repassword"/>
+              <mat-error *ngIf="hasError('repassword', 'required')">Re password is required</mat-error>
+              <mat-error *ngIf="hasError('repassword', 'match')">Re password is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>Role *</mat-label>
+              <mat-select formControlName="roleId">
+                <mat-option *ngFor="let i of roles" [value]="i.id">
+                  {{ i.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="hasError('roleId', 'required')"
+                >Role is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+            <mat-form-field>
+              <mat-label>Country *</mat-label>
+              <mat-select formControlName="countryId">
+                <mat-option *ngFor="let i of countries" [value]="i.id">
+                  {{ i.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="hasError('countryId', 'required')"
+                >Country is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+          
+        </div>
+        <div class="row " >
+          <div class="col-3">
+            <input type="checkbox" formControlName="active"> Active
+        
+          </div>
+          <div class="col-9">
+            <div
+              class="btn-toolbar float-right"
+              role="toolbar"
+              aria-label="Toolbar with button groups"
+            >
+              <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+              </div>
+              <div
+                class="btn-group mr-2"
+                role="group"
+                aria-label="Second group"
+              >
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+
+  
+  </form>
+  <form *ngIf="user.id != undefined"
+  class="example-form"
+  [formGroup]="userEditGroup"
+  (ngSubmit)="onSubmit()"
+  autocomplete="off"
+  novalidate
+  fxLayout="column wrap"
+  fxLayoutAlign="center center"
+  fxLayoutGap="10px"
+>
+<div class="e-custom-card bg-1 custom-padding">
+  <h5>Edit User</h5>
+      <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+          <mat-form-field>
+            <mat-label>First Name *</mat-label>
+            <input
+              matInput
+              placeholder="First name"
+              formControlName="firstName"
+            />
+            <mat-error *ngIf="hasError('firstName', 'required')"
+              >First name is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+          <mat-form-field>
+            <mat-label>Middle Name </mat-label>
+            <input
+              matInput
+              placeholder="Middle name"
+              formControlName="middleName"
+            />
+          </mat-form-field>
+        </div>
+        <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+          <mat-form-field>
+            <mat-label>Last Name *</mat-label>
+            <input
+              matInput
+              placeholder="Last name"
+              formControlName="lastName"
+            />
+            <mat-error *ngIf="hasError('lastName', 'required')"
+              >Last name is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+        
+      </div>
+
+      <div class="row">
+        <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+          <mat-form-field>
+            <mat-label>Email *</mat-label>
+            <input matInput placeholder="Email" formControlName="email" />
+            <mat-error *ngIf="hasError('email', 'required')"
+              >Email is required</mat-error
+            >
+            <mat-error *ngIf="hasError('email', 'email')"
+              >Please enter valid email</mat-error
+            >
+          </mat-form-field>
+        </div>
+        
+        <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+          <mat-form-field>
+            <mat-label>Role *</mat-label>
+            <mat-select formControlName="roleId">
+              <mat-option *ngFor="let i of roles" [value]="i.id">
+                {{ i.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('roleId', 'required')"
+              >Role is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+          <mat-form-field>
+            <mat-label>Country *</mat-label>
+            <mat-select formControlName="countryId">
+              <mat-option *ngFor="let i of countries" [value]="i.id">
+                {{ i.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="hasError('countryId', 'required')"
+              >Country is required</mat-error
+            >
+          </mat-form-field>
+        </div>
+        <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+          <input type="checkbox" formControlName="active"> Active
+        
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          
+          <div
+            class="btn-toolbar float-right"
+            role="toolbar"
+            aria-label="Toolbar with button groups"
+          >
+            <div class="btn-group mr-2" role="group" aria-label="First group">
+              <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+            </div>
+            <div
+              class="btn-group mr-2"
+              role="group"
+              aria-label="Second group"
+            >
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</form>
+

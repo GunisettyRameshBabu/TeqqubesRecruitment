@@ -1,0 +1,14 @@
+.card-bg{
+    background-image: url(../../../assets/background1.jpeg);
+    background-size: cover;
+  }
+
+  .e-card-header {
+    background-image: url(../../../assets/recruitcare.jpg);
+    background-size: cover;
+  }
+
+  #img {
+    border-radius: 15;
+    max-height: 80px;
+  }

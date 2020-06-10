@@ -1,0 +1,69 @@
+<div class="e-custom-card bg-1 custom-padding">
+  <h5>Add / Edit City</h5>
+  <form
+    class="example-form"
+    [formGroup]="masterGroup"
+    autocomplete="off"
+    novalidate
+    fxLayout="column wrap"
+    fxLayoutAlign="center center"
+    fxLayoutGap="10px"
+    (ngSubmit)="onSubmit()"
+  >
+    <div class="row">
+      <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+        <mat-form-field>
+          <mat-label>Country Name *</mat-label>
+          <input
+            matInput
+            readonly
+            placeholder="Name"
+            formControlName="countryName"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+        <mat-form-field>
+          <mat-label>State *</mat-label>
+          <mat-select formControlName="state">
+            <mat-option *ngFor="let i of states" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('state', 'required')"
+            >Name is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
+        <mat-form-field>
+          <mat-label>City *</mat-label>
+          <input matInput placeholder="City" formControlName="name" />
+          <mat-error *ngIf="hasError('name', 'required')"
+            >City is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div
+        class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12 pull-right"
+      >
+        <div
+          class="btn-toolbar float-right"
+          role="toolbar"
+          aria-label="Toolbar with button groups"
+        >
+          <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+              Cancel
+            </button>
+          </div>
+          <div class="btn-group mr-2" role="group" aria-label="Second group">
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

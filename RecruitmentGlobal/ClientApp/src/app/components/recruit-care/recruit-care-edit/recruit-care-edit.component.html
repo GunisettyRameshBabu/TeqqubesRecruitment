@@ -1,0 +1,489 @@
+<form
+  [formGroup]="recruitGroup"
+  (ngSubmit)="onSubmit()"
+  autocomplete="off"
+  novalidate
+>
+  <div class="e-custom-card bg-1 custom-padding">
+    <h5>
+      {{ recruit.id == 0 ? "Add Candidate Info" : "Edit Candidate Info" }}
+      <i class="fa fa-close float-right" (click)="cancel()"></i>
+    </h5>
+    <div class="row">
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>First Name *</mat-label>
+          <input
+            matInput
+            placeholder="First name"
+            formControlName="firstName"
+            [disabled]="recruit.id > 0"
+          />
+          <mat-error *ngIf="hasError('firstName', 'required')"
+            >First name is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Middle Name </mat-label>
+          <input
+            matInput
+            placeholder="Middle name"
+            formControlName="middleName"
+            [disabled]="recruit.id > 0"
+          />
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Last Name *</mat-label>
+          <input matInput placeholder="Last name" formControlName="lastName" />
+          <mat-error *ngIf="hasError('lastName', 'required')"
+            >Last name is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Email *</mat-label>
+          <input
+            matInput
+            placeholder="Email"
+            formControlName="email"
+            [disabled]="recruit.id > 0"
+          />
+          <mat-error *ngIf="hasError('email', 'required')"
+            >Email is required</mat-error
+          >
+          <mat-error *ngIf="hasError('email', 'email')"
+            >Please enter valid email</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Job Id *</mat-label>
+          <mat-select
+            formControlName="jobid"
+            (selectionChange)="jobChanged($event)"
+            [disabled]="recruit.id > 0"
+          >
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of jobs" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('jobid', 'required')"
+            >Job id is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Phone *</mat-label>
+          <input
+            matInput
+            placeholder="Phone"
+            formControlName="phone"
+            type="number"
+          />
+          <mat-error *ngIf="hasError('phone', 'required')"
+            >Phone Number is required</mat-error
+          >
+          <mat-error *ngIf="hasError('phone', 'pattern')"
+            >Please enter valid phone number</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Status *</mat-label>
+          <mat-select formControlName="status">
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of statusList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('status', 'required')"
+            >Status is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Notice Period *</mat-label>
+          <mat-select formControlName="noticePeriod">
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of noticeList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('noticePeriod', 'required')"
+            >Notice Period is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>State *</mat-label>
+          <mat-select
+            formControlName="state"
+            (selectionChange)="stateChanged()"
+            [disabled]="recruit.id > 0"
+          >
+            <input
+              class="myInput"
+              matInput
+              (keyup)="search($event.target.value, stateListMain, 'stateList')"
+              autocomplete="off"
+              placeholder="search"
+            />
+
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of stateList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('state', 'required')"
+            >Candidate State is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>City *</mat-label>
+          <mat-select formControlName="city" [disabled]="recruit.id > 0">
+            <input
+              class="myInput"
+              matInput
+              (keyup)="search($event.target.value, cityListMain, 'cityList')"
+              autocomplete="off"
+              placeholder="search"
+            />
+
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of cityList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('city', 'required')"
+            >Candidate City is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Relavant Work Experience *</mat-label>
+          <mat-label>Relavant Experience *</mat-label>
+          <mat-select formControlName="relavantExp">
+            <input
+              class="myInput"
+              matInput
+              (keyup)="
+                search($event.target.value, totalExpListMain, 'relavantExpList')
+              "
+              autocomplete="off"
+              placeholder="search"
+            />
+
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of relavantExpList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('relavantExp', 'required')"
+            >Relavant Experience is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Total Experience *</mat-label>
+          <mat-select formControlName="totalExp">
+            <input
+              class="myInput"
+              matInput
+              (keyup)="
+                search($event.target.value, totalExpListMain, 'totalExpList')
+              "
+              autocomplete="off"
+              placeholder="search"
+            />
+
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of totalExpList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('totalExp', 'required')"
+            >Total Experience is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6 col-xlg-6">
+        <mat-form-field>
+          <mat-label>Heighest Qualification *</mat-label>
+          <mat-select formControlName="highestQualification" required>
+            <input
+              class="myInput"
+              matInput
+              (keyup)="
+                search(
+                  $event.target.value,
+                  qualificationListMain,
+                  'qualificationList'
+                )
+              "
+              autocomplete="off"
+              placeholder="search"
+            />
+
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of qualificationList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError('highestQualification', 'required')"
+            >Total Experience is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6 col-xlg-6">
+        <div class="e-float-input upload-area">
+          <div class="row">
+            <input
+              type="file"
+              #fileInput
+              id="fileUpload"
+              name="fileUpload"
+              multiple="multiple"
+              accept="application/pdf,application/msword,
+application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+              style="display: none;"
+              (change)="uploadFile(fileInput.files)"
+            />
+            <div class="col-md-8 col-sm-12 col-xs-12 col-lg-8 col-xlg-8">
+              <mat-form-field>
+                <mat-label>Upload Resume *</mat-label>
+                <input
+                  id="upload"
+                  name="upload"
+                  readonly
+                  formControlName="fileName"
+                  matInput
+                />
+                
+                <mat-error *ngIf="hasError('fileName', 'required')"
+                  >Resume is required</mat-error
+                >
+
+                <div *ngIf="recruit && recruit.id > 0 && recruit.fileName != '' && recruit.fileName != undefined && recruit.fileName != null">
+                  <mat-label> Download Resume *</mat-label>
+                  <button
+                  type="button"
+                  class="btn btn-link"
+                  (click)="getResume(recruit)"
+                  
+                >
+                  {{ recruit.fileName }}
+                </button>
+                </div>
+              </mat-form-field>
+            </div>
+            <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+              <button
+                id="browse"
+                type="button"
+                class="e-control e-btn e-info"
+                (click)="fileInput.click()"
+              >
+                Browse...
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
+        <mat-form-field>
+          <mat-label>Comments *</mat-label>
+          <textarea
+            matInput
+            placeholder="Ex. ......."
+            formControlName="comments"
+            style="min-height: 75px;"
+          ></textarea>
+          <mat-error *ngIf="hasError('comments', 'required')"
+            >Comment is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="custom-div-gap"></div>
+  <div
+    class="e-custom-card bg-1 custom-padding"
+    *ngIf="countryCode && countryCode != 'IN'"
+  >
+    <h5>
+      Additional Information
+    </h5>
+    <div class="row">
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Skype Id</mat-label>
+          <input
+            placeholder="Skype id"
+            formControlName="skypeid"
+            matInput
+            required
+          />
+
+          <mat-error *ngIf="hasGlobalError('skypeid', 'required')"
+            >Skype is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>VISA Type </mat-label>
+          <mat-select formControlName="visaType" required>
+            <input
+              class="myInput"
+              matInput
+              (keyup)="search($event.target.value, visaListMain, 'visaList')"
+              autocomplete="off"
+              placeholder="search"
+            />
+
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of visaList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasGlobalError('visaType', 'required')"
+            >VISA Type is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Expected Rate Per Hour *</mat-label>
+          <input
+            matInput
+            placeholder="Expected rate per hour"
+            formControlName="expectedRatePerHour"
+            required
+          />
+          <mat-error *ngIf="hasGlobalError('expectedRatePerHour', 'required')"
+            >VISA Type is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-slide-toggle formControlName="anyOfferExist"
+          >Any Offer Exist</mat-slide-toggle
+        >
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Education Details *</mat-label>
+          <textarea
+            matInput
+            placeholder="Education details. ......."
+            formControlName="educationDetails"
+            style="min-height: 75px;"
+            required
+          ></textarea>
+          <mat-error *ngIf="hasGlobalError('educationDetails', 'required')"
+            >Education Details is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Best time to reach *</mat-label>
+          <input
+            matInput
+            placeholder="Best Time to reach"
+            formControlName="bestTimeToReach"
+            required
+          />
+          <mat-error *ngIf="hasGlobalError('bestTimeToReach', 'required')"
+            >Best Time to reach is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-form-field>
+          <mat-label>Best way to reach *</mat-label>
+          <mat-select formControlName="bestWayToReach" required>
+            <input
+              class="myInput"
+              matInput
+              (keyup)="
+                search(
+                  $event.target.value,
+                  bestWayToReachListMain,
+                  'bestWayToReachList'
+                )
+              "
+              autocomplete="off"
+              placeholder="search"
+            />
+
+            <mat-option [value]=""> </mat-option>
+            <mat-option *ngFor="let i of bestWayToReachList" [value]="i.id">
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasGlobalError('bestWayToReach', 'required')"
+            >Best way to reach is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+        <mat-slide-toggle formControlName="rtr">RTR</mat-slide-toggle>
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-div-gap"></div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
+      <div
+        class="btn-toolbar float-right"
+        role="toolbar"
+        aria-label="Toolbar with button groups"
+      >
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+          <button type="button" class="btn btn-secondary" (click)="cancel()">
+            Cancel
+          </button>
+        </div>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

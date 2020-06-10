@@ -1,0 +1,32 @@
+.gutter-top {
+    padding-top: 20px;
+}
+
+.bg {
+    background-image: url(../../../assets/background1.jpeg) !important;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: 30px;
+}
+
+
+
+  .jumbotron-fluid {
+    
+    position: relative;
+    
+    display: flex;
+    align-items: center;
+} 
+
+.e-card-actions {
+    vertical-align: middle;
+}
+
+
+
+mat-card-content {
+    vertical-align: middle;
+}
+
+
