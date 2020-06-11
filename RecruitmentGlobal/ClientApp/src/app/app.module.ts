@@ -108,7 +108,9 @@ import { AddOpeningsComponent } from './components/add-openings/add-openings.com
     AddcandidateComponent,
     ViewcandidateComponent,
     JobdetailsComponent,
-    AddOpeningsComponent
+    AddOpeningsComponent,
+    SpinnerComponent
+    
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -235,7 +237,8 @@ import { AddOpeningsComponent } from './components/add-openings/add-openings.com
     SpinnerComponent,
     RecruitCareViewComponent,
     ViewcandidateComponent,
-    ViewCandidatesByStatusComponent
+    ViewCandidatesByStatusComponent,
+    ClientEditComponent,
   ]
 })
 export class AppModule { }

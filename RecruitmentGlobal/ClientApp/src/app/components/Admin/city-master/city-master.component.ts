@@ -9,6 +9,7 @@ import { ServiceResponse } from 'src/app/models/service-response';
 import { ClickEventArgs } from '@syncfusion/ej2-angular-navigations';
 import { AddOrEditCityComponent } from './add-or-edit-city/add-or-edit-city.component';
 import { Title } from '@angular/platform-browser';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'app-city-master',
@@ -25,12 +26,11 @@ export class CityMasterComponent implements OnInit {
   masterTypes = [];
   masterItem: any;
   constructor(
-    private userSession: UsersessionService,
-    private commonService: CommonService,
     private alertService: ToastrService,
     private modal: MatDialog,
     private masterDataService: MasterdataService,
-    private titleService: Title
+    private titleService: Title,
+    public utilities: UtilitiesService
   ) {}
 
   ngOnInit(): void {

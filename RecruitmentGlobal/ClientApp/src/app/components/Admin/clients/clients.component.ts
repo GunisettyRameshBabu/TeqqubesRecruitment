@@ -9,6 +9,7 @@ import { ServiceResponse } from 'src/app/models/service-response';
 import { ClickEventArgs } from '@syncfusion/ej2-angular-navigations';
 import { ClientEditComponent } from './client-edit/client-edit.component';
 import { Title } from '@angular/platform-browser';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'app-clients',
@@ -28,7 +29,8 @@ export class ClientsComponent implements OnInit {
     private alertService: ToastrService,
     private modal: MatDialog,
     private masterDataService: MasterdataService,
-    private titleService: Title
+    private titleService: Title,
+    public utilities: UtilitiesService
   ) {}
 
   ngOnInit(): void {

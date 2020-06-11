@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
 import { MasterdataService } from 'src/app/services/masterdata.service';
 import { Title } from '@angular/platform-browser';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'app-state-master',
@@ -26,12 +27,11 @@ export class StateMasterComponent implements OnInit {
   masterTypes = [];
   masterItem: any;
   constructor(
-    private userSession: UsersessionService,
-    private commonService: CommonService,
     private alertService: ToastrService,
     private modal: MatDialog,
     private masterDataService: MasterdataService,
-    private titleService: Title
+    private titleService: Title,
+    public utilities: UtilitiesService
   ) {}
 
   ngOnInit(): void {

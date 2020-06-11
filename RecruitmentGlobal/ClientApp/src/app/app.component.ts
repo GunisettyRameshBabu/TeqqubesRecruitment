@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Spinkit } from 'ng-http-loader';
+import { SpinnerComponent } from './shared/spinner/spinner.component';
 
 @Component({
   selector: 'app-root',
@@ -9,4 +10,5 @@ import { Spinkit } from 'ng-http-loader';
 export class AppComponent {
   title = 'Qube Connect';
   public spinkit = Spinkit;
+  public spinnerComponent: SpinnerComponent;
 }

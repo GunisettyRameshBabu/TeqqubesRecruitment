@@ -17,6 +17,7 @@ import { ClickEventArgs } from '@syncfusion/ej2-angular-navigations';
 import { MatDialog } from '@angular/material/dialog';
 import { AddcandidateComponent } from '../jobcandidates/addcandidate/addcandidate.component';
 import { Title } from '@angular/platform-browser';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-jobopenings',
@@ -81,7 +82,7 @@ export class JobopeningsComponent implements OnInit {
     public jobService: JobService,
     private router: Router,
     private alertService: ToastrService,
-    private sessionService: UsersessionService,
+    public utilities: UtilitiesService,
     private modal: MatDialog,
     private activatedRoute: ActivatedRoute,
     private titleService: Title
@@ -90,9 +91,9 @@ export class JobopeningsComponent implements OnInit {
   ngOnInit(): void {
     
     this.modal.closeAll();
-    this.toolbarOptions = ['Openings', 'ExcelExport', 'Add'];
+    this.toolbarOptions = ['Openings', 'ExcelExport', 'Add New'];
     this.pageSettings = { pageSizes: true, pageSize: 10 };
-    this.editSettings = { allowAdding: true };
+    this.editSettings = { allowAdding: false };
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.type = params.type;
       this.titleService.setTitle(`Qube Connect - ${ this.type == 'in' ? 'India ' : this.type == 'gl' ? 'Global ' : 'All ' } Job Openings`);
@@ -146,7 +147,7 @@ export class JobopeningsComponent implements OnInit {
         fileName: 'jobopenings.xlsx',
       };
       this.grid.excelExport(excelExportProperties);
-    } else if (args.item.id.indexOf('add') > 0) {
+    } else if (args.item.id.indexOf('Add New') > 0) {
       this.router.navigate(['addjob']);
     }
   }

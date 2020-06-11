@@ -12,6 +12,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditOrAddMasterDataComponent } from './edit-or-add-master-data/edit-or-add-master-data.component';
 import { MasterdataService } from 'src/app/services/masterdata.service';
 import { Title } from '@angular/platform-browser';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'app-master-data',
@@ -27,12 +28,11 @@ export class MasterDataComponent implements OnInit {
   masterTypes = [];
   masterItem: any;
   constructor(
-    private userSession: UsersessionService,
-    private commonService: CommonService,
     private alertService: ToastrService,
     private modal: MatDialog,
     private masterDataService: MasterdataService,
-    private titleService: Title
+    private titleService: Title,
+    private utilities: UtilitiesService
   ) {}
 
   ngOnInit(): void {

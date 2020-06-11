@@ -43,7 +43,7 @@
       ></e-column>
       <e-column field="createdDate" headerText="Created Date" width="200">
         <ng-template let-data>
-          {{ data.createdDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+          {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
         </ng-template>
       </e-column>
       <e-column
@@ -53,7 +53,7 @@
       ></e-column>
       <e-column field="modifiedDate" headerText="Modified Date" width="200">
         <ng-template let-data>
-          {{ data.modifiedDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+          {{ utilities.convertToLocalDate(data.modifiedDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
         </ng-template>
       </e-column>
       <e-column field="notice" headerText="Notice Period" width="200">

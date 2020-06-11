@@ -28,7 +28,7 @@
         <e-column field="createdByName" headerText="Created By" width="200"></e-column>
         <e-column field="createdDate" headerText="Created Date" width="200">
           <ng-template let-data>
-            {{ data.createdDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+            {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
           </ng-template>
         </e-column>
         <e-column field="modifiedName" headerText="Modified By" width="200"></e-column>
@@ -59,4 +59,3 @@
       
     </e-columns>
      </ejs-grid>
-     

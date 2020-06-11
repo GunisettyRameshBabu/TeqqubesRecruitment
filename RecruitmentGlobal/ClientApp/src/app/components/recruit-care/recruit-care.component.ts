@@ -16,6 +16,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { CommonService } from 'src/app/services/common.service';
 import { RecruitCareViewComponent } from './recruit-care-view/recruit-care-view.component';
 import { saveAs } from 'file-saver';
+import { UtilitiesService } from '../../services/utilities.service';
 
 @Component({
   selector: 'app-recruit-care',
@@ -32,7 +33,8 @@ export class RecruitCareComponent implements OnInit {
     private commonService: CommonService,
     private jobService: JobService,
     private alertService: ToastrService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public utilities: UtilitiesService
   ) {}
 
   ngOnInit(): void {

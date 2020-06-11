@@ -9,6 +9,7 @@ import { UsersessionService } from 'src/app/services/usersession.service';
 import { CommonService } from 'src/app/services/common.service';
 import { MasterdataService } from 'src/app/services/masterdata.service';
 import { Title } from '@angular/platform-browser';
+import { UtilitiesService } from '../../../services/utilities.service';
 
 @Component({
   selector: 'app-country-master',
@@ -25,12 +26,11 @@ export class CountryMasterComponent implements OnInit {
   masterTypes = [];
   masterItem: any;
   constructor(
-    private userSession: UsersessionService,
-    private commonService: CommonService,
     private alertService: ToastrService,
     private modal: MatDialog,
     private masterDataService: MasterdataService,
-    private titleService: Title
+    private titleService: Title,
+    public utilities: UtilitiesService
   ) {}
 
   ngOnInit(): void {
