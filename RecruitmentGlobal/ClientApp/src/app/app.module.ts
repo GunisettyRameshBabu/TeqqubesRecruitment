@@ -66,6 +66,7 @@ import { JobopeningsComponent } from './components/jobopenings/jobopenings.compo
 import { AddcandidateComponent } from './components/jobcandidates/addcandidate/addcandidate.component';
 import { ViewcandidateComponent } from './components/jobcandidates/viewcandidate/viewcandidate.component';
 import { AddOpeningsComponent } from './components/add-openings/add-openings.component';
+import { LoaderService } from './services/loader.service';
 
 
 @NgModule({
@@ -223,6 +224,7 @@ import { AddOpeningsComponent } from './components/add-openings/add-openings.com
     ToolbarService,
     ExcelExportService,
     EditService,
+    LoaderService
   ],
   bootstrap: [AppComponent],
   entryComponents: [
