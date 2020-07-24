@@ -41,8 +41,8 @@
         headerText="Created By"
         width="200"
       ></e-column>
-      <e-column field="createdDate" headerText="Created Date" width="200">
-        <ng-template let-data>
+      <e-column field="createdDate" headerText="Created Date" width="250">
+        <ng-template #template let-data>
           {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
         </ng-template>
       </e-column>
@@ -51,14 +51,14 @@
         headerText="Modified By"
         width="200"
       ></e-column>
-      <e-column field="modifiedDate" headerText="Modified Date" width="200">
-        <ng-template let-data>
+      <e-column field="modifiedDate" headerText="Modified Date" width="250">
+        <ng-template #template let-data>
           {{ utilities.convertToLocalDate(data.modifiedDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
         </ng-template>
       </e-column>
       <e-column field="notice" headerText="Notice Period" width="200">
       </e-column>
-      <e-column field="fileName" headerText="Resume" width="200">
+      <e-column field="fileName" headerText="Resume" width="250">
         <ng-template #template let-data>
           <button
             type="button"

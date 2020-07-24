@@ -7,8 +7,9 @@ namespace RecruitmentApi.Models
 {
     public enum Roles
     {
-        SuperAdmin = 40,
-        Admin = 35,
-        Recruiter = 36
+        SuperAdmin = 32,
+        Recruiter = 29,
+        TeamLead = 28,
+        NA = 57
     }
 }

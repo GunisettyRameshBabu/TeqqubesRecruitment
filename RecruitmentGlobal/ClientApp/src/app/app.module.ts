@@ -67,6 +67,8 @@ import { AddcandidateComponent } from './components/jobcandidates/addcandidate/a
 import { ViewcandidateComponent } from './components/jobcandidates/viewcandidate/viewcandidate.component';
 import { AddOpeningsComponent } from './components/add-openings/add-openings.component';
 import { LoaderService } from './services/loader.service';
+import { DateTimeFormatPipe } from './pipes/date-time-format-filter.pipe';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -110,8 +112,8 @@ import { LoaderService } from './services/loader.service';
     ViewcandidateComponent,
     JobdetailsComponent,
     AddOpeningsComponent,
-    SpinnerComponent
-    
+    SpinnerComponent,
+    DateTimeFormatPipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -224,7 +226,9 @@ import { LoaderService } from './services/loader.service';
     ToolbarService,
     ExcelExportService,
     EditService,
-    LoaderService
+    LoaderService,
+    DateTimeFormatPipe,
+    DatePipe
   ],
   bootstrap: [AppComponent],
   entryComponents: [
