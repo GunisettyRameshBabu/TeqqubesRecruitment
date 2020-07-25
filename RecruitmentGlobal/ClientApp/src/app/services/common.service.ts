@@ -31,8 +31,8 @@ export class CommonService {
     );
   }
 
-  getCitiesByState(id: number) {
-    return this.http.get(environment.apiUrl + 'Cities/GetCitiesByState/' + id);
+  getCitiesByState(id: number,isDefaults = false) {
+    return this.http.get(environment.apiUrl + 'Cities/GetCitiesByState/' + id + '/' + isDefaults);
   }
 
   downloadResume(id: number, type = 'j') {

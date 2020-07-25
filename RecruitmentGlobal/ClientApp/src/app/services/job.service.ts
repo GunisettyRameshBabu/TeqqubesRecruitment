@@ -123,6 +123,12 @@ export class JobService {
       environment.apiUrl + 'RecruitCares/MoveToJobCandidates/' + id
     );
   }
+
+  public DeleteRecruitCare(id) {
+    return this.http.delete(
+      environment.apiUrl + 'RecruitCares/' + id
+    );
+  }
   public addOrUpdateRecruitCare(item) {
     if (item.id > 0) {
       return this.http.put(
@@ -140,9 +146,9 @@ export class JobService {
     );
   }
 
-  getStatesByJobId(id: number) {
+  getStatesByJobId(id: number, includeDefaults = false) {
     return this.http.get(
-      environment.apiUrl + 'States/GetStatesByJobId/' + id
+      environment.apiUrl + 'States/GetStatesByJobId/' + id + '/'+includeDefaults
     );
   }
 }

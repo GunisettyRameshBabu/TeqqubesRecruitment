@@ -86,8 +86,8 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/MasterDatas/5
-        [HttpGet("GetMasterDataByType/{id}")]
-        public async Task<ServiceResponse<IList<MasterData>>> GetMasterDataByType(int id)
+        [HttpGet("GetMasterDataByType/{id}/{includeDefault}")]
+        public async Task<ServiceResponse<IList<MasterData>>> GetMasterDataByType(int id,bool includeDefault)
         {
             var response = new ServiceResponse<IList<MasterData>>();
             try
@@ -95,7 +95,7 @@ namespace RecruitmentApi.Controllers
                 
                 if (Enum.IsDefined(typeof(MasterDataTypes), id))
                 {
-                    response.Data = await _context.MasterData.Where(x => x.type == id).ToListAsync();
+                    response.Data = await _context.MasterData.Where(x => x.type == id || (includeDefault ? x.type == (int) MasterDataTypes.Common : true)).OrderByDescending(x => x.type).ToListAsync();
                     if (response.Data == null)
                     {
                         response.Success = false;

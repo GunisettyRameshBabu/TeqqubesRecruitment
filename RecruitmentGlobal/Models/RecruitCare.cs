@@ -23,13 +23,13 @@ namespace RecruitmentApi.Models
 
         public long phone { get; set; }
 
-        public int status { get; set; }
+        public int? status { get; set; }
 
         public byte[] resume { get; set; }
 
         public string fileName { get; set; }
 
-        public int noticePeriod { get; set; }
+        public int? noticePeriod { get; set; }
 
         public int? state { get; set; }
 
@@ -56,5 +56,9 @@ namespace RecruitmentApi.Models
         public int? highestQualification { get; set; }
 
         public int? relavantExp { get; set; }
+
+        public string currentCTC { get; set; }
+
+        public string expectedCTC { get; set; }
     }
 }

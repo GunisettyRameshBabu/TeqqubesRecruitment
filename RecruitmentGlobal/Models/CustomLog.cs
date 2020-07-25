@@ -45,7 +45,7 @@ namespace RecruitmentApi.Models
 
            await context.SaveChangesAsync();
 
-            return "An unhandled exception occured , Please contact admin ";
+            return sbExceptionMessage.ToString().ToLower().IndexOf("unique") > 0 ? "Entry already Exists with same combination , Please try different" : "An unhandled exception occured , Please contact admin ";
         }
     }
 }

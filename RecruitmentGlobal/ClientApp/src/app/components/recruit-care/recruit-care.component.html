@@ -13,15 +13,23 @@
     [selectionSettings]="selectOptions"
     (checkboxChange)="checkboxChange($event)"
     [allowSorting]="true"
+    [allowPaging]='true'  [pageSettings]='pageSettings' 
     (recordDoubleClick)="rowClick($event)"
   >
     <e-columns>
-      <e-column type="checkbox" width="50"></e-column>
+      <!--<e-column type="checkbox" width="50"></e-column>-->
       <e-column width="60">
         <ng-template #template let-data>
           <!-- <img src="../../../assets/edit-black-18dp.svg" (click)="edit(data)">
-                -->
+        -->
           <span (click)="edit(data)"><i class="fa fa-edit"></i></span>
+        </ng-template>
+      </e-column>
+      <e-column width="60" *ngIf="hasViewPermission()">
+        <ng-template #template let-data>
+          <!-- <img src="../../../assets/edit-black-18dp.svg" (click)="edit(data)">
+        -->
+          <span (click)="delete(data)"><i class="fa fa-trash"></i></span>
         </ng-template>
       </e-column>
       <e-column width="60">
@@ -36,21 +44,17 @@
 
       <e-column field="phone" headerText="Phone" width="200"> </e-column>
       <e-column field="statusName" headerText="Status" width="200"> </e-column>
-      <e-column
-        field="createdByName"
-        headerText="Created By"
-        width="200"
-      ></e-column>
+      <e-column field="createdByName"
+                headerText="Created By"
+                width="200"></e-column>
       <e-column field="createdDate" headerText="Created Date" width="250">
         <ng-template #template let-data>
           {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
         </ng-template>
       </e-column>
-      <e-column
-        field="modifiedName"
-        headerText="Modified By"
-        width="200"
-      ></e-column>
+      <e-column field="modifiedName"
+                headerText="Modified By"
+                width="200"></e-column>
       <e-column field="modifiedDate" headerText="Modified Date" width="250">
         <ng-template #template let-data>
           {{ utilities.convertToLocalDate(data.modifiedDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
@@ -60,12 +64,10 @@
       </e-column>
       <e-column field="fileName" headerText="Resume" width="250">
         <ng-template #template let-data>
-          <button
-            type="button"
-            class="btn btn-link"
-            (click)="getResume(data)"
-            *ngIf="data.fileName != '' && data.fileName != undefined"
-          >
+          <button type="button"
+                  class="btn btn-link"
+                  (click)="getResume(data)"
+                  *ngIf="data.fileName != '' && data.fileName != undefined">
             {{ data.fileName }}
           </button>
         </ng-template>
@@ -76,25 +78,25 @@
       <e-column field="cityName" headerText="City" width="200"> </e-column>
       <e-column field="totalExpName" headerText="Total Experience" width="200">
       </e-column>
-      <e-column
-        field="relavantExpName"
-        headerText="Relavant Experience"
-        width="200"
-      >
+      <e-column field="relavantExpName"
+                headerText="Relavant Experience"
+                width="200">
       </e-column>
-      <e-column
-        field="bestWayToReachName"
-        headerText="Best Way to Reach"
-        width="200"
-      >
+      <e-column field="bestWayToReachName"
+                headerText="Best Way to Reach"
+                width="200">
       </e-column>
       <e-column field="visaTypeName" headerText="VISA Type" width="200">
       </e-column>
-      <e-column
-        field="highestQualificationName"
-        headerText="Highest qualification"
-        width="200"
-      >
+      <e-column field="highestQualificationName"
+                headerText="Highest qualification"
+                width="200">
+      </e-column>
+      <e-column field="currentCTC" headerText="Current CTC" width="150">
+      </e-column>
+      <e-column field="expectedCTC"
+                headerText="Expected CTC"
+                width="150">
       </e-column>
     </e-columns>
   </ejs-grid>

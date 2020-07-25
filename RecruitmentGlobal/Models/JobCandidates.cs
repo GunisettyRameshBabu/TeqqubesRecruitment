@@ -21,7 +21,7 @@ namespace RecruitmentApi.Models
 
         public byte[] resume { get; set; }
 
-        public int status { get; set; }
+        public int? status { get; set; }
 
         public string fileName { get; set; }
 
@@ -52,5 +52,9 @@ namespace RecruitmentApi.Models
         public int? highestQualification { get; set; }
 
         public int? relavantExp { get; set; }
+
+        public string currentCTC { get; set; }
+
+        public string expectedCTC { get; set; }
     }
 }

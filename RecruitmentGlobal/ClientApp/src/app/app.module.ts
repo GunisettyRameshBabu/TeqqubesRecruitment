@@ -245,6 +245,8 @@ import { DatePipe } from '@angular/common';
     ViewcandidateComponent,
     ViewCandidatesByStatusComponent,
     ClientEditComponent,
+    ConfirmationDialogComponent,
+    AddcandidateComponent
   ]
 })
 export class AppModule { }

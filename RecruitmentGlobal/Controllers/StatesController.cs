@@ -82,9 +82,9 @@ namespace RecruitmentApi.Controllers
             return Ok(response);
         }
 
-        [Route("GetStatesByJobId/{id}")]
+        [Route("GetStatesByJobId/{id}/{includeDefaults}")]
         [HttpGet]
-        public async Task<ActionResult<ServiceResponse<IList<DropdownModel>>>> GetStatesByJobId(int id)
+        public async Task<ActionResult<ServiceResponse<IList<DropdownModel>>>> GetStatesByJobId(int id, bool includeDefaults)
         {
             var response = new ServiceResponse<IList<DropdownModel>>();
             try
@@ -97,6 +97,19 @@ namespace RecruitmentApi.Controllers
                                           id = x.Id,
                                           name = x.Name
                                       }).AsQueryable().ToListAsync();
+
+                if (includeDefaults)
+                {
+                    var items = await _context.MasterData.Where(x => x.type == (int)MasterDataTypes.Common).ToListAsync();
+                    foreach (var item in items)
+                    {
+                        response.Data.Add(new DropdownModel()
+                        {
+                            id = item.id,
+                            name = item.name
+                        });
+                    }
+                }
                 response.Success = true;
                 response.Message = "Success";
             }

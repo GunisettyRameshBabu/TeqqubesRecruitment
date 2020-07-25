@@ -89,14 +89,26 @@ namespace RecruitmentApi.Controllers
             return response;
         }
 
-        [Route("GetCitiesByState/{id}")]
+        [Route("GetCitiesByState/{id}/{includeDefaults}")]
         [HttpGet]
-        public async Task<ServiceResponse<IList<City>>> GetCitiesByState(int id)
+        public async Task<ServiceResponse<IList<City>>> GetCitiesByState(int id,bool includeDefaults)
         {
             var response = new ServiceResponse<IList<City>>();
             try
             {
                 response.Data = await _context.Citys.Where(x => x.State == id).OrderBy(x => x.Name).ToListAsync();
+                if (includeDefaults)
+                {
+                    var items = await _context.MasterData.Where(x => x.type == (int)MasterDataTypes.Common).ToListAsync();
+                    foreach (var item in items)
+                    {
+                        response.Data.Add(new City()
+                        {
+                            Name = item.name,
+                            Id = item.id
+                        });
+                    }
+                }
                 response.Success = true;
                 response.Message = "Success";
             }

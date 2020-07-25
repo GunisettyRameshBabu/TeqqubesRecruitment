@@ -1,215 +1,203 @@
 <div class="e-custom-card bg-1 custom-padding">
-    <h5>
-     View Candidate Info
-      <i class="fa fa-close float-right" (click)="close()"></i>
-    </h5>
-    <div class="row">
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>First Name *</mat-label>
-          <input
-            matInput
-            placeholder="First name"
-            [(ngModel)]="candidate.firstName"
-            readonly
-          />
-         
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Middle Name </mat-label>
-          <input
-            matInput
-            placeholder="Middle name"
-            [(ngModel)]="candidate.middleName"
-            readonly
-          />
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Last Name *</mat-label>
-          <input matInput placeholder="Last name" [(ngModel)]="candidate.lastName" readonly />
-         
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Email *</mat-label>
-          <input
-            matInput
-            placeholder="Email"
-            [(ngModel)]="candidate.email"
-            readonly
-          />
-        
-        </mat-form-field>
-      </div>
+  <h5>
+    View Candidate Info
+    <i class="fa fa-close float-right" (click)="close()"></i>
+  </h5>
+  <div class="row">
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>First Name *</mat-label>
+        <input matInput
+               placeholder="First name"
+               [(ngModel)]="candidate.firstName"
+               readonly />
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Middle Name </mat-label>
+        <input matInput
+               placeholder="Middle name"
+               [(ngModel)]="candidate.middleName"
+               readonly />
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Last Name *</mat-label>
+        <input matInput placeholder="Last name" [(ngModel)]="candidate.lastName" readonly />
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Email *</mat-label>
+        <input matInput
+               placeholder="Email"
+               [(ngModel)]="candidate.email"
+               readonly />
+
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Job Id *</mat-label>
+        <input matInput
+               [(ngModel)]="candidate.jobName"
+               readonly />
+      </mat-form-field>
     </div>
 
-    <div class="row">
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Job Id *</mat-label>
-          <input
-            matInput
-            [(ngModel)]="candidate.jobName"
-            readonly
-          />
-        </mat-form-field>
-      </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Phone *</mat-label>
+        <input matInput
+               placeholder="Phone"
+               [(ngModel)]="candidate.phone"
+               readonly />
 
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Phone *</mat-label>
-          <input
-            matInput
-            placeholder="Phone"
-            [(ngModel)]="candidate.phone"
-            readonly
-          />
-        
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Status *</mat-label>
-          <input
-            matInput
-            [(ngModel)]="candidate.statusName"
-            readonly
-          />
-         
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Notice Period *</mat-label>
-          <input
-          matInput
-          placeholder="First name"
-          [(ngModel)]="candidate.noticePeriodName"
-          readonly
-        />
-        
-        </mat-form-field>
-      </div>
+      </mat-form-field>
     </div>
-    <div class="row">
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>State *</mat-label>
-          <input
-            matInput
-            placeholder="First name"
-            [(ngModel)]="candidate.stateName"
-            readonly
-          />
-        
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>City *</mat-label>
-          <input
-            matInput
-            placeholder="First name"
-            [(ngModel)]="candidate.cityName"
-            readonly
-          />
-        
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Relavant Work Experience *</mat-label>
-          <mat-label>Relavant Experience *</mat-label>
-          <input
-          matInput
-          [(ngModel)]="candidate.relavantExpName"
-          readonly
-        />
-         
-        </mat-form-field>
-      </div>
-      <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
-        <mat-form-field>
-          <mat-label>Total Experience *</mat-label>
-          <input
-          matInput
-          [(ngModel)]="candidate.totalExpName"
-          readonly
-        />
-        </mat-form-field>
-      </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Status *</mat-label>
+        <input matInput
+               [(ngModel)]="candidate.statusName"
+               readonly />
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Notice Period *</mat-label>
+        <input matInput
+               placeholder="First name"
+               [(ngModel)]="candidate.noticePeriodName"
+               readonly />
+
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>State *</mat-label>
+        <input matInput
+               placeholder="First name"
+               [(ngModel)]="candidate.stateName"
+               readonly />
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>City *</mat-label>
+        <input matInput
+               placeholder="First name"
+               [(ngModel)]="candidate.cityName"
+               readonly />
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Relavant Work Experience *</mat-label>
+        <mat-label>Relavant Experience *</mat-label>
+        <input matInput
+               [(ngModel)]="candidate.relavantExpName"
+               readonly />
+
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Total Experience *</mat-label>
+        <input matInput
+               [(ngModel)]="candidate.totalExpName"
+               readonly />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Current CTC</mat-label>
+        <input matInput
+               [(ngModel)]="candidate.currentCTC" readonly />
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-12 col-xs-12 col-lg-3 col-xlg-3">
+      <mat-form-field>
+        <mat-label>Expected CTC</mat-label>
+        <input matInput
+               [(ngModel)]="candidate.expectedCTC" readonly />
+      </mat-form-field>
+    </div>
+    <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6 col-xlg-6">
+      <mat-form-field>
+        <mat-label>Heighest Qualification *</mat-label>
+        <input matInput
+               [(ngModel)]="candidate.highestQualificationName"
+               readonly />
+
+      </mat-form-field>
     </div>
 
-    <div class="row">
-      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6 col-xlg-6">
-        <mat-form-field>
-          <mat-label>Heighest Qualification *</mat-label>
-          <input
-            matInput
-            [(ngModel)]="candidate.highestQualificationName"
-            readonly
-          />
-         
-        </mat-form-field>
-      </div>
+  </div>
 
-      <div class="col-md-6 col-sm-12 col-xs-12 col-lg-6 col-xlg-6">
-        <div class="e-float-input upload-area">
-          <div class="row">
-           
-            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
-              <mat-form-field>
-                <mat-label> Resume *</mat-label>
-                <input
-                  id="upload"
-                  name="upload"
-                  readonly
-                  [(ngModel)]="candidate.fileName"
-                  matInput
-                />
-                <div *ngIf="candidate && candidate.id > 0 && candidate.fileName != '' && candidate.fileName != undefined && candidate.fileName != null">
-                  <mat-label> Download Resume *</mat-label>
-                  <button
-                  type="button"
-                  class="btn btn-link"
-                  (click)="getResume(candidate)"
-                  
-                >
+
+  <div class="row">
+  
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
+      <div class="e-float-input upload-area">
+        <div class="row">
+
+          <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
+            <mat-form-field>
+              <mat-label> Resume *</mat-label>
+              <input id="upload"
+                     name="upload"
+                     readonly
+                     [(ngModel)]="candidate.fileName"
+                     matInput />
+              <div *ngIf="candidate && candidate.id > 0 && candidate.fileName != '' && candidate.fileName != undefined && candidate.fileName != null">
+                <mat-label> Download Resume *</mat-label>
+                <button type="button"
+                        class="btn btn-link"
+                        (click)="getResume(candidate)">
                   {{ candidate.fileName }}
                 </button>
-                </div>
-               
-               
-              </mat-form-field>
-            
-            </div>
-         
+              </div>
+
+
+            </mat-form-field>
+
           </div>
+
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="row">
-      <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
-        <mat-form-field>
-          <mat-label>Comments *</mat-label>
-          <textarea
-            matInput
-            placeholder="Ex. ......."
-            [(ngModel)]="candidate.comments"
-            style="min-height: 75px;"
-            readonly
-          ></textarea>
-         
-        </mat-form-field>
-      </div>
+  <div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 col-xlg-12">
+      <mat-form-field>
+        <mat-label>Comments *</mat-label>
+        <textarea matInput
+                  placeholder="Ex. ......."
+                  [(ngModel)]="candidate.comments"
+                  style="min-height: 75px;"
+                  readonly></textarea>
+
+      </mat-form-field>
     </div>
   </div>
+</div>
   <div class="custom-div-gap"></div>
   <div
     class="e-custom-card bg-1 custom-padding padding-bottom"

@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
     let user = this.userSession.getLoggedInUser() as User;
     return user == null
       ? false
-      : (user.loginTypes == 'Admin' || user.loginTypes == null)
+      : (user.loginTypes == 'Super Admin' || user.loginTypes == null)
       ? true
       : user.loginTypes.split(',').indexOf(type) > 0;
   }

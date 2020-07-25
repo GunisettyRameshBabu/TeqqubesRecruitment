@@ -9,9 +9,9 @@ import { environment } from 'src/environments/environment';
 export class MasterdataService {
   constructor(private http: HttpClient) {}
 
-  getMasterDataByType(type: MasterDataTypes) {
+  getMasterDataByType(type: MasterDataTypes, includeDefault: boolean = false) {
     return this.http.get(
-      environment.apiUrl + 'MasterDatas/GetMasterDataByType/' + (type as number)
+      environment.apiUrl + 'MasterDatas/GetMasterDataByType/' + (type as number) + '/' + includeDefault
     );
   }
 

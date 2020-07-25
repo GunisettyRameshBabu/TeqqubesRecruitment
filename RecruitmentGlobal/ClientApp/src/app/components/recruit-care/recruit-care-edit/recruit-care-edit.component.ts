@@ -67,22 +67,22 @@ export class RecruitCareEditComponent implements OnInit {
       lastName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       jobid: new FormControl('', Validators.required),
-      comments: new FormControl('', Validators.required),
+      comments: new FormControl(null, Validators.required),
       phone: new FormControl('', [
         Validators.required,
         Validators.pattern(new RegExp("[0-9 ]{10}")),
       ]),
-      status: new FormControl('', Validators.required),
+      status: new FormControl(null, Validators.required),
       createdBy: new FormControl(null),
       modifiedBy: new FormControl(null),
       createdDate: new FormControl(null),
       modifiedDate: new FormControl(null),
-      fileName: new FormControl('', Validators.required),
-      noticePeriod: new FormControl('',Validators.required),
-      city: new FormControl('', Validators.required),
-      state: new FormControl('', Validators.required),
-      relavantExp: new FormControl('', Validators.required),
-      totalExp: new FormControl('', Validators.required),
+      fileName: new FormControl(null),
+      noticePeriod: new FormControl(null, Validators.required),
+      city: new FormControl(null, Validators.required),
+      state: new FormControl(null, Validators.required),
+      relavantExp: new FormControl(null, Validators.required),
+      totalExp: new FormControl(null, Validators.required),
       skypeid: new FormControl(null),
       visaType: new FormControl(null),
       expectedRatePerHour: new FormControl(null),
@@ -91,7 +91,9 @@ export class RecruitCareEditComponent implements OnInit {
       bestTimeToReach: new FormControl(null),
       bestWayToReach: new FormControl(null),
       rtr: new FormControl(null),
-      highestQualification: new FormControl(null, Validators.required)
+      highestQualification: new FormControl(null, Validators.required),
+      currentCTC: new FormControl(''),
+      expectedCTC: new FormControl('')
     });
     this.recruitGroup.reset(this.recruit);
     if(this.recruit.id > 0) {
@@ -113,7 +115,7 @@ export class RecruitCareEditComponent implements OnInit {
       });
 
     this.masterDataService
-      .getMasterDataByType(MasterDataTypes.JobCandidateStatus)
+      .getMasterDataByType(MasterDataTypes.JobCandidateStatus,true)
       .subscribe((res: ServiceResponse) => {
         if (res.success) {
           this.statusList = res.data;
@@ -123,7 +125,7 @@ export class RecruitCareEditComponent implements OnInit {
       });
 
     this.masterDataService
-      .getMasterDataByType(MasterDataTypes.NoticePeriod)
+      .getMasterDataByType(MasterDataTypes.NoticePeriod,true)
       .subscribe((res: ServiceResponse) => {
         if (res.success) {
           this.noticeList = res.data;
@@ -133,7 +135,7 @@ export class RecruitCareEditComponent implements OnInit {
       });
      
       this.masterDataService
-      .getMasterDataByType(MasterDataTypes.Experience)
+      .getMasterDataByType(MasterDataTypes.Experience,true)
       .subscribe((res: ServiceResponse) => {
         if (res.success) {
           this.totalExpList = res.data;
@@ -145,7 +147,7 @@ export class RecruitCareEditComponent implements OnInit {
       });
 
       this.masterDataService
-      .getMasterDataByType(MasterDataTypes.VisaType)
+      .getMasterDataByType(MasterDataTypes.VisaType,true)
       .subscribe((res: ServiceResponse) => {
         if (res.success) {
           this.visaList = res.data;
@@ -156,7 +158,7 @@ export class RecruitCareEditComponent implements OnInit {
       });
 
       this.masterDataService
-      .getMasterDataByType(MasterDataTypes.WaysToReach)
+      .getMasterDataByType(MasterDataTypes.WaysToReach,true)
       .subscribe((res: ServiceResponse) => {
         if (res.success) {
           this.bestWayToReachList = res.data;
@@ -168,7 +170,7 @@ export class RecruitCareEditComponent implements OnInit {
 
       
     this.masterDataService
-    .getMasterDataByType(MasterDataTypes.Qualifications)
+    .getMasterDataByType(MasterDataTypes.Qualifications,true)
     .subscribe((res: ServiceResponse) => {
       if (res.success) {
         this.qualificationList = res.data;
@@ -229,20 +231,19 @@ export class RecruitCareEditComponent implements OnInit {
   
 
   public uploadFile = (files) => {
-    console.log(files);
     this.resume = files;
     this.recruitGroup.controls.fileName.setValue(files[0].name);
   };
 
   jobChanged(event) {
     this.countryCode = this.jobs.filter(x => x.id ==event.value)[0].key;
-    this.recruitGroup.controls.state.setValue('');
-    this.recruitGroup.controls.city.setValue('');
+    this.recruitGroup.controls.state.setValue(null);
+    this.recruitGroup.controls.city.setValue(null);
     this.getStates(event.value);
   }
 
   private getStates(value: any) {
-    this.jobService.getStatesByJobId(value).subscribe((res: ServiceResponse) => {
+    this.jobService.getStatesByJobId(value,true).subscribe((res: ServiceResponse) => {
       if (res.success) {
         this.stateList = res.data;
         this.stateListMain = res.data;
@@ -254,12 +255,12 @@ export class RecruitCareEditComponent implements OnInit {
   }
 
   stateChanged() {
-    this.recruitGroup.controls.city.setValue('');
+    this.recruitGroup.controls.city.setValue(null);
     this.getCities();
   }
 
   private getCities() {
-    this.commonService.getCitiesByState(this.recruitGroup.controls.state.value).subscribe((res: ServiceResponse) => {
+    this.commonService.getCitiesByState(this.recruitGroup.controls.state.value,true).subscribe((res: ServiceResponse) => {
       if (res.success) {
         this.cityList = res.data;
         this.cityListMain = res.data;

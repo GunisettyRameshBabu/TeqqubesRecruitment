@@ -29,13 +29,23 @@ export class RecruitCareComponent implements OnInit {
   editSettings: EditSettingsModel;
   toolbar: string[];
   public selectOptions: Object;
+  user: User;
+  pageSettings = { pageSizes: true, pageSize: 10 };
   constructor(
     private commonService: CommonService,
     private jobService: JobService,
     private alertService: ToastrService,
     private dialog: MatDialog,
-    public utilities: UtilitiesService
-  ) {}
+    public utilities: UtilitiesService,
+    private userSession: UsersessionService
+  ) { }
+
+  hasViewPermission() {
+    let user = this.userSession.getLoggedInUser() as User;
+    return user == null
+      ? false
+      : user.roleName == "Super Admin" || user.roleName == 'Admin' ? true : false;
+  }
 
   ngOnInit(): void {
     this.dialog.closeAll();
@@ -69,6 +79,10 @@ export class RecruitCareComponent implements OnInit {
 
   edit(data) {
     this.showPopup(data);
+  }
+
+  delete(data) {
+    this.openDeleteDialog(data);
   }
 
   private showPopup(data: any) {
@@ -147,6 +161,37 @@ export class RecruitCareComponent implements OnInit {
         this.move(data);
       }
     });
+  }
+
+  openDeleteDialog(data) {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data: {
+        message: 'Are you sure want to delete?',
+        buttonText: {
+          ok: 'Yes',
+          cancel: 'No',
+        },
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.remove(data);
+      }
+    });
+  }
+
+  remove(data) {
+    this.jobService
+      .DeleteRecruitCare(data.id)
+      .subscribe((res: ServiceResponse) => {
+        if (res.success) {
+          this.alertService.success(res.message);
+          this.getData();
+        } else {
+          this.alertService.error(res.message);
+        }
+      });
   }
 
   move(data) {

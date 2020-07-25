@@ -110,7 +110,9 @@ namespace RecruitmentApi.Controllers
                                            highestQualificationName = h.name,
                                            visaTypeName = v.name,
                                            cityName = ci.Name,
-                                           stateName = st.Name
+                                           stateName = st.Name,
+                                           currentCTC = x.currentCTC,
+                                           expectedCTC = x.expectedCTC
                                        }).AsQueryable().ToListAsync();
 
                 response.Success = true;
@@ -196,7 +198,9 @@ namespace RecruitmentApi.Controllers
                                            visaTypeName = v.name,
                                            cityName = ci.Name,
                                            stateName = st.Name,
-                                           countryCode = co.Code
+                                           countryCode = co.Code,
+                                           currentCTC = x.currentCTC,
+                                           expectedCTC = x.expectedCTC
                                        }).AsQueryable().ToListAsync();
 
                 response.Success = true;
@@ -383,20 +387,34 @@ namespace RecruitmentApi.Controllers
             }
             return response;
         }
+
         // DELETE: api/RecruitCares/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<RecruitCare>> DeleteRecruitCare(int id)
+        public async Task<ServiceResponse<bool>> DeleteRecruitCare(int id)
         {
-            var recruitCare = await _context.RecruitCare.FindAsync(id);
-            if (recruitCare == null)
+            var response = new ServiceResponse<bool>();
+            try
             {
-                return NotFound();
+                var recruitCare = await _context.RecruitCare.FindAsync(id);
+                if (recruitCare == null)
+                {
+                    response.Message = "Recruit Care Not Found";
+                    response.Success = false;
+                }
+
+                _context.RecruitCare.Remove(recruitCare);
+                await _context.SaveChangesAsync();
+                response.Message = "Candidate Removed Successfully";
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = await CustomLog.Log(ex, _context);
+                response.Success = false;
             }
 
-            _context.RecruitCare.Remove(recruitCare);
-            await _context.SaveChangesAsync();
 
-            return recruitCare;
+            return response;
         }
 
         private bool RecruitCareExists(int id)
