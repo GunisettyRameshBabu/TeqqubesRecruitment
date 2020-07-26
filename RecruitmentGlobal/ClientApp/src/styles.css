@@ -7,7 +7,6 @@
 @import '../node_modules/@syncfusion/ej2-splitbuttons/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-angular-grids/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-angular-inputs/styles/material.css';
-
 @import '../node_modules/@syncfusion/ej2-layouts/styles/material.css';
 * {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -183,6 +182,4 @@ mat-form-field {
 }
 
 
-/**  Copyright 2019 Google LLC. All Rights Reserved.
-    Use of this source code is governed by an MIT-style license that
-    can be found in the LICENSE file at http://angular.io/license */
+

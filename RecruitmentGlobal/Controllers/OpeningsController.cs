@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -27,8 +28,8 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/Openings/
-        [HttpGet("GetOpeningsByCountry/{type}")]
-        public async Task<ActionResult<ServiceResponse<OpeningsList>>> GetOpeningsByCountry(string type)
+        [HttpPost("GetOpeningsByCountry/{type}")]
+        public async Task<ActionResult<ServiceResponse<OpeningsList>>> GetOpeningsByCountry(string type, CustomPagingRequest request)
         {
             var response = new ServiceResponse<OpeningsList>();
             try
@@ -51,7 +52,7 @@ namespace RecruitmentApi.Controllers
                 }
                 var countryCodes = countries.Select(x => x.Id).ToList();
                 response.Data = new OpeningsList();
-                response.Data.Jobs = await (from o in _context.Openings
+                var query = (from o in _context.Openings
                                             join a in _context.Users on o.assaignedTo equals a.id into assaigns
                                             from a in assaigns.DefaultIfEmpty()
                                             join c in _context.Citys on o.city equals c.Id
@@ -70,10 +71,13 @@ namespace RecruitmentApi.Controllers
                                             {
                                                 id = o.id,
                                                 accountManager = Common.GetFullName(am),
+                                                account = o.accountManager,
                                                 assaignedTo = Common.GetFullName(a),
+                                                assaigned = o.assaignedTo,
                                                 city = c.Name,
                                                 client = cl.Name,
                                                 contactName = Common.GetFullName(co),
+                                                contact = o.contactName,
                                                 jobid = o.id,
                                                 jobName = o.jobid,
                                                 jobtitle = o.jobtitle,
@@ -84,8 +88,65 @@ namespace RecruitmentApi.Controllers
                                                 createdByName = Common.GetFullName(cr),
                                                 createdDate = o.createdDate,
                                                 modifiedDate = o.modifiedDate,
-                                                modifiedName    = Common.GetFullName(md)
-                                            }).AsQueryable().ToListAsync();
+                                                modifiedName    = Common.GetFullName(md),
+                                                createdBy = o.createdBy,
+                                                modifiedBy = o.modifiedBy
+                                            }).AsQueryable();
+
+                switch (request.sort)
+                {
+                    case "accountManager":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.account) : query.OrderBy(x => x.account));
+                        break;
+                    case "assaignedTo":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.assaigned) :
+                            query.OrderBy(x => x.assaigned));
+                        break;
+                    case "city":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.city) : query.OrderBy(x => x.city));
+                        break;
+                    case "client":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.client) : query.OrderBy(x => x.client));
+                        break;
+                    case "contactName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.contact) : query.OrderBy(x => x.contact));
+                        break;
+                    case "modifiedDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedDate) : query.OrderBy(x => x.modifiedDate));
+                        break;
+                    case "id":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.id) : query.OrderBy(x => x.id));
+                        break;
+                    case "jobName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.jobid) : query.OrderBy(x => x.jobid));
+                        break;
+                    case "jobid":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.id) : query.OrderBy(x => x.id));
+                        break;
+                    case "jobtitle":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.jobtitle) : query.OrderBy(x => x.jobtitle));
+                        break;
+                    case "status":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.status) : query.OrderBy(x => x.status));
+                        break;
+                    case "targetdate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.targetdate) : query.OrderBy(x => x.targetdate));
+                        break;
+                    case "createdByName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdBy) : query.OrderBy(x => x.createdBy));
+                        break;
+                    case "createdDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdDate) : query.OrderBy(x => x.createdDate));
+                        break;
+                    case "modifiedName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) : query.OrderBy(x => x.modifiedBy));
+                        break;
+                    default:
+                        break;
+                }
+
+                response.Data.Jobs = new PagedList<OpeningsListView>(
+                query, request);
 
                 response.Data.Candidates = await (from x in _context.JobCandidates
                                                   join j in _context.Openings on x.jobid equals j.id
@@ -105,7 +166,7 @@ namespace RecruitmentApi.Controllers
                                                   join ci in _context.Citys on x.city equals ci.Id into cities
                                                   from ci in cities.DefaultIfEmpty()
                                                   join cu in _context.Countries on j.country equals cu.Id
-                                                  where response.Data.Jobs.Select(x => x.jobid).Contains(x.jobid) && (user != null && user.roleId == (int)Roles.SuperAdmin) || (x.createdBy == LoggedInUser || x.modifiedBy == LoggedInUser)
+                                                  where response.Data.Jobs.List.Select(x => x.jobid).Contains(x.jobid) && (user != null && user.roleId == (int)Roles.SuperAdmin) || (x.createdBy == LoggedInUser || x.modifiedBy == LoggedInUser)
                                                   select new JobCandidatesView()
                                                   {
                                                       jobid = x.jobid,

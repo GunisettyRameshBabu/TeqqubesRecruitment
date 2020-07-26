@@ -18,6 +18,7 @@ export class AddOrEditCityComponent implements OnInit {
   masterData;
   masterGroup: FormGroup;
   states = [];
+  countries = [];
   constructor(
     private formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<AddOrEditCityComponent>,
@@ -34,16 +35,25 @@ export class AddOrEditCityComponent implements OnInit {
     this.masterGroup = this.formBuilder.group({
       id: new FormControl(0),
       name: new FormControl('', Validators.required),
-      countryName: new FormControl('', Validators.required),
+      countryName: new FormControl(''),
       country: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
-      stateName: new FormControl('', Validators.required),
+      stateName: new FormControl(''),
       createdBy: new FormControl(null),
       createdDate: new FormControl(null),
       modifiedBy: new FormControl(null),
       modifiedDate: new FormControl(null),
     });
     this.masterGroup.reset(this.masterData);
+    this.masterDataService.getAllCountries().subscribe((res: ServiceResponse) => {
+      if (res.success) {
+        if (res.success) {
+          this.countries = res.data;
+        } else {
+          this.alertService.error(res.message);
+        }
+      }
+    });
     if (this.masterData.id > 0 ) {
       this.commonService
       .getStatesByCountry(this.masterData.country) 
@@ -59,6 +69,19 @@ export class AddOrEditCityComponent implements OnInit {
 
   closed() {
    
+  }
+
+  countryChanged() {
+    this.states = [];
+    this.commonService
+      .getStatesByCountry(this.masterGroup.controls.country.value)
+      .subscribe((res: ServiceResponse) => {
+        if (res.success) {
+          this.states = res.data;
+        } else {
+          this.alertService.error(res.message);
+        }
+      });
   }
 
   cancel() {

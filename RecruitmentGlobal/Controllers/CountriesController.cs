@@ -10,6 +10,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -28,7 +29,7 @@ namespace RecruitmentApi.Controllers
 
         // GET: api/Countries
         [HttpGet]
-        public async Task<ServiceResponse<IEnumerable<CountryView>>> GetCountries()
+        public async Task<ServiceResponse<IEnumerable<CountryView>>> GetAllCountries()
         {
             var response = new ServiceResponse<IEnumerable<CountryView>>();
             try
@@ -50,6 +51,76 @@ namespace RecruitmentApi.Controllers
                                            Name = x.Name
 
                                        }).AsQueryable().ToListAsync();
+                response.Success = true;
+                response.Message = "Data Retrived";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = await CustomLog.Log(ex, _context);
+            }
+            return response;
+        }
+
+        [HttpPost]
+        [Route("GetCountries")]
+        public async Task<ServiceResponse<PagedList<CountryView>>> GetCountries(CustomPagingRequest request)
+        {
+            var response = new ServiceResponse<PagedList<CountryView>>();
+            try
+            {
+               var query = (from x in _context.Countries
+                                       join y in _context.Users on x.createdBy equals y.id
+                                       join z in _context.Users on x.modifiedBy equals z.id into modifies
+                                       from z in modifies.DefaultIfEmpty()
+                                       select new CountryView()
+                                       {
+                                           Code = x.Code,
+                                           modifiedBy = x.modifiedBy,
+                                           createdBy = x.createdBy,
+                                           createdByName = Common.GetFullName(y),
+                                           createdDate = x.createdDate,
+                                           Id = x.Id,
+                                           modifiedByName = Common.GetFullName(z),
+                                           modifiedDate = x.modifiedDate,
+                                           Name = x.Name
+
+                                       }).AsQueryable();
+
+                switch (request.sort)
+                {
+                    case "code":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Code) : query.OrderBy(x => x.Code));
+                        break;
+                    case "modifiedBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) :
+                            query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "createdBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdBy) : query.OrderBy(x => x.createdBy));
+                        break;
+                    case "createdDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdDate) : query.OrderBy(x => x.createdDate));
+                        break;
+                    case "modifiedName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) : query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "modifiedDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedDate) : query.OrderBy(x => x.modifiedDate));
+                        break;
+                    case "id":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Id) : query.OrderBy(x => x.Id));
+                        break;
+                    case "name":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Name) : query.OrderBy(x => x.Name));
+                        break;
+
+                    default:
+                        break;
+                }
+
+                response.Data = new PagedList<CountryView>(
+                query, request);
                 response.Success = true;
                 response.Message = "Data Retrived";
             }

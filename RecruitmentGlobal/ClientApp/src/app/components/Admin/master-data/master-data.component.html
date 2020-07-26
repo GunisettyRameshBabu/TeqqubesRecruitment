@@ -1,15 +1,14 @@
 <div class="e-custom-card bg-1 custom-padding padding-bottom">
-  <ejs-grid
-    #grid
-    [dataSource]="masterdata"
-    [toolbar]="toolbar"
-    [editSettings]="editSettings"
-    [allowExcelExport]="true"
-    [allowPaging]="true"
-    [pageSettings]="pageSettings"
-    (toolbarClick)="toolbarClick($event)"
-    [allowSorting]="true"
-  >
+  <ejs-grid #grid
+            [dataSource]="masterdata"
+            [toolbar]="toolbar"
+            [editSettings]="editSettings"
+            [allowExcelExport]="true"
+           
+            [pageSettings]="pageSettings"
+            (toolbarClick)="toolbarClick($event)"
+            [allowSorting]="true"
+            (actionBegin)='onDataBound($event)'>
     <e-columns>
       <e-column width="60">
         <ng-template #template let-data>
@@ -19,12 +18,10 @@
       </e-column>
       <e-column field="name" headerText="Name" width="150"> </e-column>
 
-      <e-column
-        field="type"
-        headerText="Type"
-        width="100"
-        editType="dropdownedit"
-      >
+      <e-column field="type"
+                headerText="Type"
+                width="100"
+                editType="dropdownedit">
         <ng-template #template let-data>
           {{ data.typeName }}
         </ng-template>
@@ -46,4 +43,7 @@
       </e-column>
     </e-columns>
   </ejs-grid>
+  <ejs-pager [pageSize]='pageSettings.pageSize' [pageCount]='pageSettings.pageCount' [totalRecordsCount]='pageSettings.totalRecordsCount'
+             [pageSizes]="pageSizes" (click)="onPageChange($event)" (dropDownChanged)="onPageSizeChange($event)">
+    </ejs-pager>
 </div>

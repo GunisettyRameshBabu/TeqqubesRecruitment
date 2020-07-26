@@ -19,8 +19,8 @@ export class MasterdataService {
     return this.http.get(environment.apiUrl + 'MasterDataTypes');
   }
 
-  getMasterData() {
-    return this.http.get(environment.apiUrl + 'MasterDatas');
+  getMasterData(req) {
+    return this.http.post(environment.apiUrl + 'MasterDatas/GetMasterData', req);
   }
 
   addOrUpdateMasterData(data: any) {
@@ -63,23 +63,31 @@ export class MasterdataService {
     }
   }
 
-  getCountries() {
+  getAllCountries() {
     return this.http.get(environment.apiUrl + 'Countries');
   }
 
-  getStates() {
-    return this.http.get(environment.apiUrl + 'States');
+  getCountries(req) {
+    return this.http.post(environment.apiUrl + 'Countries/GetCountries',req);
   }
 
-  getCities() {
-    return this.http.get(environment.apiUrl + 'Cities');
+  getStates(req) {
+    return this.http.post(environment.apiUrl + 'States/GetStates', req);
   }
 
-  getClients() {
+  getCities(req) {
+    return this.http.post(environment.apiUrl + 'Cities/GetCities', req);
+  }
+
+  getAllClients() {
     return this.http.get(environment.apiUrl + 'ClientCodes');
   }
 
-  getUserLogs() {
-    return this.http.get(environment.apiUrl + 'UserSessions');
+  getClients(req) {
+    return this.http.post(environment.apiUrl + 'ClientCodes/GetClientCodes',req);
+  }
+
+  getUserLogs(req) {
+    return this.http.post(environment.apiUrl + 'UserSessions/GetUserSessions', req);
   }
 }

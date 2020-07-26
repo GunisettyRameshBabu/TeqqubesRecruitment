@@ -1,40 +1,38 @@
 <div class="e-custom-card bg-1 custom-padding padding-bottom">
-
-
-  <ejs-grid
-    #grid
-    [dataSource]="candidates"
-    [toolbar]="toolbar"
-    [editSettings]="editSettings"
-    [allowExcelExport]="true"
-    (toolbarClick)="toolbarClick($event)"
-    [enableHover]="false"
-    [allowSelection]="true"
-    [selectionSettings]="selectOptions"
-    (checkboxChange)="checkboxChange($event)"
-    [allowSorting]="true"
-    [allowPaging]='true'  [pageSettings]='pageSettings' 
-    (recordDoubleClick)="rowClick($event)"
-  >
+  <ejs-grid #grid
+            [dataSource]="candidates"
+            [toolbar]="toolbar"
+            [editSettings]="editSettings"
+            [allowExcelExport]="true"
+            (toolbarClick)="toolbarClick($event)"
+            [enableHover]="false"
+            [allowSelection]="true"
+            [selectionSettings]="selectOptions"
+            (checkboxChange)="checkboxChange($event)"
+            [allowSorting]="true"
+            (recordDoubleClick)="rowClick($event)"
+            (actionBegin)='onDataBound($event)'
+            (excelExportComplete)='excelExportComplete()'>
     <e-columns>
-      <!--<e-column type="checkbox" width="50"></e-column>-->
+      <e-column type="checkbox" width="50"></e-column>
       <e-column width="60">
         <ng-template #template let-data>
           <!-- <img src="../../../assets/edit-black-18dp.svg" (click)="edit(data)">
-        -->
-          <span (click)="edit(data)"><i class="fa fa-edit"></i></span>
+          -->
+          <span (click)="edit(data)" title="Edit Recruit Item"><i class="fa fa-edit"></i></span>
         </ng-template>
       </e-column>
       <e-column width="60" *ngIf="hasViewPermission()">
         <ng-template #template let-data>
           <!-- <img src="../../../assets/edit-black-18dp.svg" (click)="edit(data)">
-        -->
-          <span (click)="delete(data)"><i class="fa fa-trash"></i></span>
+          -->
+          <span (click)="delete(data)" title="Delete Recuitcare Item"><i class="fa fa-trash"></i></span>
         </ng-template>
       </e-column>
       <e-column width="60">
         <ng-template #template let-data>
-          <img src="../../../assets/move.svg" (click)="openDialog(data)" />
+          <span (click)="openDialog(data)" title="Move to Job Candidates"><i class="fa fa-arrow-right"></i></span>
+          <!--<img src="../../../assets/move.svg" (click)="openDialog(data)" />-->
         </ng-template>
       </e-column>
 
@@ -100,4 +98,7 @@
       </e-column>
     </e-columns>
   </ejs-grid>
+  <ejs-pager [pageSize]='pageSettings.pageSize' [pageCount]='pageSettings.pageCount' [totalRecordsCount]='pageSettings.totalRecordsCount'
+             [pageSizes]="pageSizes" (click)="onPageChange($event)" (dropDownChanged)="onPageSizeChange($event)">
+  </ejs-pager>
 </div>

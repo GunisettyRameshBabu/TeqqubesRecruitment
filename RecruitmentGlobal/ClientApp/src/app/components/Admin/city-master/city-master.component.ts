@@ -22,7 +22,8 @@ export class CityMasterComponent implements OnInit {
   editSettings: { allowEditing: boolean; allowAdding: boolean; mode: string };
   toolbar: string[];
   masterdata = [];
-  pageSettings: { pageSizes: boolean; pageSize: number };
+  pageSizes: any = [15, 25, 50, 100];
+  pageSettings: any = { pageSizes: true, pageSize: 15, pageCount: 5, currentPage: 1, sort: 'country', sortOrder: 'Ascending' };
   masterTypes = [];
   masterItem: any;
   constructor(
@@ -36,7 +37,6 @@ export class CityMasterComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle('Qube Connect - City Master');
     this.modal.closeAll();
-    this.pageSettings = { pageSizes: true, pageSize: 10 };
     this.masterDataService.getMasterDataType().subscribe((res: ServiceResponse) => {
       if (res.success) {
         this.masterTypes = res.data;
@@ -52,11 +52,33 @@ export class CityMasterComponent implements OnInit {
     };
     this.toolbar = ['Cities','Add City', 'Excel Export','Refresh'];
   }
+  onDataBound(args: any): void {
+    if (args.requestType == "sorting") {
+      this.pageSettings.sort = args.columnName;
+      this.pageSettings.sortOrder = args.direction;
+      this.getData();
+    }
+  }
 
+  onPageChange(args: any): void {
+    if (args.currentPage) {
+      this.pageSettings.currentPage = args.currentPage;
+      this.getData();
+    }
+  }
+
+  onPageSizeChange(args: any): void {
+    if (this.pageSettings.pageSize != args.pageSize) {
+      this.pageSettings.pageSize = args.pageSize;
+      this.getData();
+    }
+  }
   getData() {
-    this.masterDataService.getCities().subscribe((res: ServiceResponse) => {
+    this.masterDataService.getCities({ size: this.pageSettings.pageSize, page: this.pageSettings.currentPage, sort: this.pageSettings.sort, sortOrder: this.pageSettings.sortOrder }).subscribe((res: ServiceResponse) => {
       if (res.success) {
-        this.masterdata = res.data;
+       // this.pageSettings.pageCount = res.data.totalPages;
+        this.pageSettings.totalRecordsCount = res.data.totalItems;
+        this.masterdata = res.data.list;
       } else {
         this.alertService.error(res.message);
       }

@@ -1,12 +1,11 @@
 <div class="e-custom-card bg-1 custom-padding padding-bottom">
-  <ejs-grid
-    #grid
-    [dataSource]="users"
-    [toolbar]="toolbar"
-    [allowExcelExport]="true"
-    (toolbarClick)="toolbarClick($event)"
-    [allowSorting]="true"
-  >
+  <ejs-grid #grid
+            [dataSource]="users"
+            [toolbar]="toolbar"
+            [allowExcelExport]="true"
+            (toolbarClick)="toolbarClick($event)"
+            [allowSorting]="true"
+            (actionBegin)='onDataBound($event)'>
     <e-columns>
       <e-column width="60">
         <ng-template #template let-data>
@@ -14,16 +13,12 @@
           <span (click)="edit(data)"><i class="fa fa-edit"></i></span>
         </ng-template>
       </e-column>
-      <e-column
-        field="firstName"
-        headerText="First Name"
-        width="200"
-      ></e-column>
-      <e-column
-        field="middleName"
-        headerText="Middle Name"
-        width="200"
-      ></e-column>
+      <e-column field="firstName"
+                headerText="First Name"
+                width="200"></e-column>
+      <e-column field="middleName"
+                headerText="Middle Name"
+                width="200"></e-column>
       <e-column field="lastName" headerText="Last Name" width="200"></e-column>
       <e-column field="userid" headerText="User Id" width="250"></e-column>
       <e-column field="email" headerText="Email" width="200"></e-column>
@@ -37,4 +32,7 @@
       </e-column>
     </e-columns>
   </ejs-grid>
+  <ejs-pager [pageSize]='pageSettings.pageSize' [pageCount]='pageSettings.pageCount' [totalRecordsCount]='pageSettings.totalRecordsCount'
+             [pageSizes]="pageSizes" (click)="onPageChange($event)" (dropDownChanged)="onPageSizeChange($event)">
+  </ejs-pager>
 </div>

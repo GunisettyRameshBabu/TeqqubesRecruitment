@@ -26,13 +26,13 @@ namespace RecruitmentApi.Models
                 message.Subject = subject;
                 message.IsBodyHtml = true; //to make message body as html  
                 message.Body = htmlString;
-                smtp.Port = configuration.GetValue<int>("EmailSettings:SMTPPort"); ;
+               // smtp.Port = configuration.GetValue<int>("EmailSettings:SMTPPort"); ;
                 smtp.Host = configuration.GetValue<string>("EmailSettings:SMTP"); //for gmail host  
                 smtp.EnableSsl = true;
-                NetworkCredential NC = new NetworkCredential();
-                NC.UserName = configuration.GetValue<string>("EmailSettings:FromEmail");
-                NC.Password = configuration.GetValue<string>("EmailSettings:Password");
-                smtp.Credentials = NC;
+                //NetworkCredential NC = new NetworkCredential();
+                //NC.UserName = configuration.GetValue<string>("EmailSettings:FromEmail");
+                //NC.Password = configuration.GetValue<string>("EmailSettings:Password");
+                //smtp.Credentials = NC;
                 smtp.Send(message);
                 result = true;
             }

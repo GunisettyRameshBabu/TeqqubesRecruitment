@@ -77,7 +77,8 @@ export class JobopeningsComponent implements OnInit {
   };
   @ViewChild('grid', { static: false }) public grid: GridComponent;
   public editSettings: EditSettingsModel;
-  public pageSettings: Object;
+  pageSizes: any = [15, 25, 50, 100];
+  pageSettings: any = { pageSizes: true, pageSize: 15, currentPage: 1, pageCount: 5, sort: 'jobName', sortOrder: 'Ascending' };
   constructor(
     public jobService: JobService,
     private router: Router,
@@ -92,7 +93,6 @@ export class JobopeningsComponent implements OnInit {
     
     this.modal.closeAll();
     this.toolbarOptions = ['Openings', 'ExcelExport', 'Add New'];
-    this.pageSettings = { pageSizes: true, pageSize: 10 };
     this.editSettings = { allowAdding: false };
     this.activatedRoute.queryParams.subscribe((params: any) => {
       this.type = params.type;
@@ -101,10 +101,33 @@ export class JobopeningsComponent implements OnInit {
     this.getData();
   }
 
+  onDataBound(args: any): void {
+    if (args.requestType == "sorting") {
+      this.pageSettings.sort = args.columnName;
+      this.pageSettings.sortOrder = args.direction;
+      this.getData();
+    }
+  }
+
+  onPageChange(args: any): void {
+    if (args.currentPage) {
+      this.pageSettings.currentPage = args.currentPage;
+      this.getData();
+    }
+  }
+
+  onPageSizeChange(args: any): void {
+    if (this.pageSettings.pageSize != args.pageSize) {
+      this.pageSettings.pageSize = args.pageSize;
+      this.getData();
+    }
+  }
+
   private getData() {
-    this.jobService.getJobOpenings(this.type).subscribe((res: any) => {
+    this.jobService.getJobOpenings({ size: this.pageSettings.pageSize, page: this.pageSettings.currentPage, sort: this.pageSettings.sort, sortOrder: this.pageSettings.sortOrder , type: this.type }).subscribe((res: any) => {
       if (res.success) {
-        this.openings = res.data;
+        this.pageSettings.totalRecordsCount = res.data.jobs.totalItems;
+        this.openings = res.data.jobs.list;
         this.childGrid.dataSource = res.data.candidates;
       } else {
         this.alertService.error(res.message);

@@ -17,6 +17,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -44,14 +45,15 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult> GetUsers()
+        [HttpPost]
+        [Route("GetUsers")]
+        public async Task<ActionResult> GetUsers(CustomPagingRequest request)
         {
-            var response = new ServiceResponse<IEnumerable<UserView>>();
+            var response = new ServiceResponse<PagedList<UserView>>();
             try
             {
 
-                response.Data = await (from x in _context.Users
+                var query = (from x in _context.Users
                                        join y in _context.MasterData on x.roleId equals y.id
                                        join c in _context.Countries on x.country equals c.Id into countries
                                        from c in countries.DefaultIfEmpty()
@@ -72,7 +74,57 @@ namespace RecruitmentApi.Controllers
                                            createdDate = x.createdDate,
                                            createdBy = x.createdBy,
                                            modifiedBy = x.modifiedBy
-                                       }).ToListAsync();
+                                       }).AsQueryable();
+                switch (request.sort)
+                {
+                    case "id":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.id) : query.OrderBy(x => x.id));
+                        break;
+                    case "email":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.email) :
+                            query.OrderBy(x => x.email));
+                        break;
+                    case "firstName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.firstName) : query.OrderBy(x => x.firstName));
+                        break;
+                    case "lastName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.lastName) : query.OrderBy(x => x.lastName));
+                        break;
+                    case "middleName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.middleName) : query.OrderBy(x => x.middleName));
+                        break;
+                    case "role":
+                    case "roleId":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.roleId) : query.OrderBy(x => x.roleId));
+                        break;
+                    case "userid":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.userid) : query.OrderBy(x => x.userid));
+                        break;
+                    case "countryName":
+                    case "countryId":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.countryId) : query.OrderBy(x => x.countryId));
+                        break;
+                    case "active":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.active) : query.OrderBy(x => x.active));
+                        break;
+                    case "modifiedDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedDate) : query.OrderBy(x => x.modifiedDate));
+                        break;
+                    case "createdDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdDate) : query.OrderBy(x => x.createdDate));
+                        break;
+                    case "createdBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdBy) : query.OrderBy(x => x.createdBy));
+                        break;
+                    case "modifiedBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) : query.OrderBy(x => x.modifiedBy));
+                        break;
+                    default:
+                        break;
+                }
+
+                response.Data = new PagedList<UserView>(
+                query, request);
                 response.Success = true;
                 response.Message = "Success";
             }

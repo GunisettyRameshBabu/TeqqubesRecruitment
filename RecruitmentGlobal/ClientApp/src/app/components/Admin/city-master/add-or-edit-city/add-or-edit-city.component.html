@@ -14,12 +14,17 @@
       <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">
         <mat-form-field>
           <mat-label>Country Name *</mat-label>
-          <input
-            matInput
-            readonly
-            placeholder="Name"
-            formControlName="countryName"
-          />
+          <!--<input
+    matInput
+    readonly
+    placeholder="Name"
+    formControlName="countryName"
+  />-->
+          <mat-select formControlName="country" (selectionChange)="countryChanged()">
+            <mat-option *ngFor="let i of countries" [value]="i.id" >
+              {{ i.name }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
       <div class="col-md-4 col-sm-12 col-xs-12 col-lg-4 col-xlg-4">

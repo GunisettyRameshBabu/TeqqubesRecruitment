@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RecruitmentGlobal.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,11 +8,11 @@ namespace RecruitmentApi.Models
 {
     public class OpeningsList
     {
-        public IEnumerable<OpeningsListView> Jobs { get; set; }
+        public PagedList<OpeningsListView> Jobs { get; set; }
 
         public IEnumerable<JobCandidatesView> Candidates { get; set; }
     }
-    public class OpeningsListView
+    public class OpeningsListView : BaseEntity
     {
         public int id { get; set; }
         public int jobid { get; set; }
@@ -40,10 +41,9 @@ namespace RecruitmentApi.Models
 
         public string createdByName { get; set; }
 
-        public DateTime? createdDate { get; set; }
-
-        public DateTime? modifiedDate { get; set; }
-
         public string modifiedName { get; set; }
+        public int? contact { get; set; }
+        public int? assaigned { get; internal set; }
+        public int? account { get; internal set; }
     }
 }

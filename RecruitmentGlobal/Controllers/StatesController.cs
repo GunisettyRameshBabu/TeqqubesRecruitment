@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -26,13 +27,14 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/States
-        [HttpGet]
-        public async Task<ServiceResponse<IEnumerable<StateView>>> GetState()
+        [HttpPost]
+        [Route("GetStates")]
+        public async Task<ServiceResponse<PagedList<StateView>>> GetState(CustomPagingRequest request)
         {
-            var response = new ServiceResponse<IEnumerable<StateView>>();
+            var response = new ServiceResponse<PagedList<StateView>>();
             try
             {
-                response.Data = await (from x in _context.State
+                var query = (from x in _context.State
                                        join y in _context.Countries on x.Country equals y.Id
                                        join c in _context.Users on x.createdBy equals c.id
                                        join m in _context.Users on x.modifiedBy equals m.id into modifies
@@ -50,7 +52,45 @@ namespace RecruitmentApi.Controllers
                                            modifiedDate = x.modifiedDate,
                                            Name = x.Name,
                                            countryName = y.Name
-                                       }).AsQueryable().ToListAsync();
+                                       }).AsQueryable();
+
+                switch (request.sort)
+                {
+                    case "countryName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Country) : query.OrderBy(x => x.Country));
+                        break;
+                    case "modifiedBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) :
+                            query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "createdBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdBy) : query.OrderBy(x => x.createdBy));
+                        break;
+                    case "createdDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdDate) : query.OrderBy(x => x.createdDate));
+                        break;
+                    case "modifiedName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) : query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "modifiedDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedDate) : query.OrderBy(x => x.modifiedDate));
+                        break;
+                    case "id":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Id) : query.OrderBy(x => x.Id));
+                        break;
+                    case "name":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Name) : query.OrderBy(x => x.Name));
+                        break;
+                    case "code":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Code) : query.OrderBy(x => x.Code));
+                        break;
+
+                    default:
+                        break;
+                }
+
+                response.Data = new PagedList<StateView>(
+                query, request);
 
                 response.Success = true;
                 response.Message = "Data Retrived";

@@ -12,6 +12,7 @@ import {
   ToolbarService,
   ExcelExportService,
   EditService,
+  PagerModule,
 } from '@syncfusion/ej2-angular-grids';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -69,7 +70,6 @@ import { AddOpeningsComponent } from './components/add-openings/add-openings.com
 import { LoaderService } from './services/loader.service';
 import { DateTimeFormatPipe } from './pipes/date-time-format-filter.pipe';
 import { DatePipe } from '@angular/common';
-
 
 @NgModule({
   declarations: [
@@ -214,7 +214,8 @@ import { DatePipe } from '@angular/common';
         component: UnAuthorizedComponent
       },
       { path: '**', redirectTo: '', pathMatch: 'full' }
-    ])
+    ]),
+    PagerModule
   ],
   providers: [{ provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }, ToastrService, JobService, CommonService,

@@ -3,6 +3,8 @@ import {
   EditSettingsModel,
   ExcelExportProperties,
   GridComponent,
+  PageSettingsModel,
+  Column,
 } from '@syncfusion/ej2-angular-grids';
 import { UsersessionService } from 'src/app/services/usersession.service';
 import { User } from 'src/app/models/user';
@@ -30,7 +32,8 @@ export class RecruitCareComponent implements OnInit {
   toolbar: string[];
   public selectOptions: Object;
   user: User;
-  pageSettings = { pageSizes: true, pageSize: 10 };
+  pageSizes: any = [15, 25, 50, 100];
+  pageSettings: any = { pageSizes: true, pageSize: 15, currentPage: 1, pageCount : 5, sort: 'jobName' , sortOrder: 'Ascending' };
   constructor(
     private commonService: CommonService,
     private jobService: JobService,
@@ -64,9 +67,10 @@ export class RecruitCareComponent implements OnInit {
   }
 
   private getData() {
-    this.jobService.GetRecruitCare().subscribe((res: ServiceResponse) => {
+    this.jobService.GetRecruitCare({ size: this.pageSettings.pageSize, page: this.pageSettings.currentPage, sort: this.pageSettings.sort, sortOrder : this.pageSettings.sortOrder}).subscribe((res: ServiceResponse) => {
       if (res.success) {
-        this.candidates = res.data;
+        this.pageSettings.totalRecordsCount = res.data.totalItems;
+        this.candidates = res.data.list;
       } else {
         this.alertService.error(res.message);
       }
@@ -108,12 +112,15 @@ export class RecruitCareComponent implements OnInit {
   }
 
   toolbarClick(args: ClickEventArgs): void {
-    console.log(args);
     if (args.item.id.indexOf('excelexport') > 0) {
       // 'Grid_excelexport' -> Grid component id + _ + toolbar item name
       const excelExportProperties: ExcelExportProperties = {
         fileName: 'Recruit care details.xlsx',
       };
+      (this.grid.columns[1] as Column).visible = false;
+      (this.grid.columns[2] as Column).visible = false;
+      (this.grid.columns[3] as Column).visible = false;
+      (this.grid.columns[4] as Column).visible = false;
       this.grid.excelExport(excelExportProperties);
     } else if (args.item.id.indexOf('Add Record') > 0) {
       this.add();
@@ -121,6 +128,36 @@ export class RecruitCareComponent implements OnInit {
       this.sendEmail();
     }
   }
+
+  excelExportComplete(): void {
+    (this.grid.columns[1] as Column).visible = true;
+    (this.grid.columns[2] as Column).visible = true;
+    (this.grid.columns[3] as Column).visible = true;
+    (this.grid.columns[4] as Column).visible = false;
+  }
+
+  onDataBound(args: any): void {
+    if (args.requestType == "sorting") {
+      this.pageSettings.sort = args.columnName;
+      this.pageSettings.sortOrder = args.direction;
+      this.getData();
+    }
+  }
+
+  onPageChange(args: any): void {
+    if (args.currentPage) {
+      this.pageSettings.currentPage = args.currentPage;
+      this.getData();
+    }
+  }
+
+  onPageSizeChange(args: any): void {
+    if (this.pageSettings.pageSize != args.pageSize) {
+      this.pageSettings.pageSize = args.pageSize;
+      this.getData();
+    }
+  }
+  
 
   sendEmail() {
     const selectedRecords = this.grid.getSelectedRecords();

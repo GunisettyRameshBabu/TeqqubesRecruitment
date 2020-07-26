@@ -11,6 +11,7 @@ import {
 } from '@syncfusion/ej2-angular-grids';
 import { ClickEventArgs } from '@syncfusion/ej2-angular-navigations';
 import { Title } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users',
@@ -23,11 +24,14 @@ export class UsersComponent implements OnInit {
   users = [];
   editparams: { params: { popupHeight: string } };
   toolbar: string[];
+  pageSizes: any = [15, 25, 50, 100];
+  pageSettings: any = { pageSizes: true, pageSize: 15, currentPage: 1, pageCount: 5, sort: 'firstName', sortOrder: 'Ascending' };
   constructor(
     private userService: UsersService,
     private router: Router,
     private dialog: MatDialog,
-    private titleService: Title
+    private titleService: Title,
+    private alertService: ToastrService,
   ) {}
 
   ngOnInit(): void {
@@ -39,8 +43,13 @@ export class UsersComponent implements OnInit {
   }
 
   private getUsers() {
-    this.userService.getUsers().subscribe((res: ServiceResponse) => {
-      this.users = res.data;
+    this.userService.getUsers({ size: this.pageSettings.pageSize, page: this.pageSettings.currentPage, sort: this.pageSettings.sort, sortOrder: this.pageSettings.sortOrder }).subscribe((res: ServiceResponse) => {
+      if (res.success) {
+        this.pageSettings.totalRecordsCount = res.data.totalItems;
+        this.users = res.data.list;
+      } else {
+        this.alertService.error(res.message);
+      }
     });
   }
 
@@ -85,5 +94,27 @@ export class UsersComponent implements OnInit {
       this.getUsers();
       }
     });
+  }
+
+  onDataBound(args: any): void {
+    if (args.requestType == "sorting") {
+      this.pageSettings.sort = args.columnName;
+      this.pageSettings.sortOrder = args.direction;
+      this.getUsers();
+    }
+  }
+
+  onPageChange(args: any): void {
+    if (args.currentPage) {
+      this.pageSettings.currentPage = args.currentPage;
+      this.getUsers();
+    }
+  }
+
+  onPageSizeChange(args: any): void {
+    if (this.pageSettings.pageSize != args.pageSize) {
+      this.pageSettings.pageSize = args.pageSize;
+      this.getUsers();
+    }
   }
 }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -26,13 +27,14 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/Cities
-        [HttpGet]
-        public async Task<ServiceResponse<IEnumerable<CityView>>> GetCitys()
+        [HttpPost]
+        [Route("GetCities")]
+        public async Task<ServiceResponse<PagedList<CityView>>> GetCitys(CustomPagingRequest request)
         {
-            var response = new ServiceResponse<IEnumerable<CityView>>();
+            var response = new ServiceResponse<PagedList<CityView>>();
             try
             {
-                response.Data = await (from x in _context.Citys
+                var query = (from x in _context.Citys
                                       join y in _context.State on x.State equals y.Id 
                                       join z in _context.Countries on y.Country equals z.Id
                                       join c in _context.Users on x.createdBy equals c.id
@@ -52,7 +54,42 @@ namespace RecruitmentApi.Controllers
                                           Id = x.Id,
                                           State = x.State,
                                           country = y.Country
-                                      }).AsQueryable().ToListAsync();
+                                      }).AsQueryable();
+
+                switch (request.sort)
+                {
+                    case "countryName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.country) : query.OrderBy(x => x.country));
+                        break;
+                    case "modifiedBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) :
+                            query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "createdBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdBy) : query.OrderBy(x => x.createdBy));
+                        break;
+                    case "createdDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdDate) : query.OrderBy(x => x.createdDate));
+                        break;
+                    case "modifiedName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) : query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "modifiedDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedDate) : query.OrderBy(x => x.modifiedDate));
+                        break;
+                    case "id":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.Id) : query.OrderBy(x => x.Id));
+                        break;
+                    case "stateName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.State) : query.OrderBy(x => x.State));
+                        break;
+                    
+                    default:
+                        break;
+                }
+
+                response.Data = new PagedList<CityView>(
+                query, request);
                 response.Success = true;
                 response.Message = "Data Retrived";
             }
@@ -184,6 +221,8 @@ namespace RecruitmentApi.Controllers
             var response = new ServiceResponse<int>();
             try
             {
+                city.createdBy = LoggedInUser;
+                city.createdDate = DateTime.UtcNow;
                 _context.Citys.Add(city);
                 await _context.SaveChangesAsync();
                 response.Data = city.Id;

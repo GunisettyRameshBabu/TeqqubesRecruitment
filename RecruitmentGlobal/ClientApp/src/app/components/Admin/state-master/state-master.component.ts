@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AddOrEditStateComponent } from './add-or-edit-state/add-or-edit-state.component';
-import { ExcelExportProperties, GridComponent } from '@syncfusion/ej2-angular-grids';
+import { ExcelExportProperties, GridComponent, PageSettingsModel } from '@syncfusion/ej2-angular-grids';
 import { ClickEventArgs } from '@syncfusion/ej2-angular-navigations';
 import { ServiceResponse } from 'src/app/models/service-response';
 import { UsersessionService } from 'src/app/services/usersession.service';
@@ -23,7 +23,8 @@ export class StateMasterComponent implements OnInit {
   editSettings: { allowEditing: boolean; allowAdding: boolean; mode: string };
   toolbar: string[];
   masterdata = [];
-  pageSettings: { pageSizes: boolean; pageSize: number };
+  pageSizes: any = [15, 25, 50, 100];
+  pageSettings: any = { pageSizes: true, pageSize: 15, pageCount: 5,  currentPage: 1, sort: 'name', sortOrder: 'Ascending' };
   masterTypes = [];
   masterItem: any;
   constructor(
@@ -37,7 +38,6 @@ export class StateMasterComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle('Qube Connect - State Master');
     this.modal.closeAll();
-    this.pageSettings = { pageSizes: true, pageSize: 10 };
     this.masterDataService.getMasterDataType().subscribe((res: ServiceResponse) => {
       if (res.success) {
         this.masterTypes = res.data;
@@ -55,16 +55,38 @@ export class StateMasterComponent implements OnInit {
   }
 
   getData() {
-    this.masterDataService.getStates().subscribe((res: ServiceResponse) => {
+    this.masterDataService.getStates({ size: this.pageSettings.pageSize, page: this.pageSettings.currentPage, sort: this.pageSettings.sort, sortOrder: this.pageSettings.sortOrder }).subscribe((res: ServiceResponse) => {
       if (res.success) {
-        this.masterdata = res.data;
+       
+        this.pageSettings.totalRecordsCount = res.data.totalItems;
+        this.masterdata = res.data.list;
       } else {
         this.alertService.error(res.message);
       }
     });
   }
 
+  onDataBound(args: any): void {
+    if (args.requestType == "sorting") {
+      this.pageSettings.sort = args.columnName;
+      this.pageSettings.sortOrder = args.direction;
+      this.getData();
+    }
+  }
 
+  onPageChange(args: any): void {
+    if (args.currentPage) {
+      this.pageSettings.currentPage = args.currentPage;
+      this.getData();
+    }
+  }
+
+  onPageSizeChange(args: any): void {
+    if (this.pageSettings.pageSize != args.pageSize) {
+      this.pageSettings.pageSize = args.pageSize;
+      this.getData();
+    }
+  }
 
   edit(data) {
     this.masterItem = data;

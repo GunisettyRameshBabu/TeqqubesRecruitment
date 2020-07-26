@@ -1,53 +1,57 @@
 <div class="e-custom-card bg-1 custom-padding">
-    <ejs-grid #grid [dataSource]='openings.jobs' [childGrid]='childGrid'  [toolbar]='toolbarOptions'
-          [allowExcelExport]='true' (toolbarClick)='toolbarClick($event)' [editSettings]='editSettings'
-          [allowPaging]='true'  [pageSettings]='pageSettings' [allowSorting]='true' (recordDoubleClick)="rowClick($event)">
-            <e-columns>
-              <e-column width="60">
-                <ng-template #template  let-data>
-                  <span (click)="Edit(data)" *ngIf="data.canEdit"><i class="fa fa-edit"></i></span>
-                  
-              </ng-template>
-              
-              </e-column>
-              <e-column width="60">
-                <ng-template #template  let-data>
-                  <span (click)="AddCandidate(data)"><i class="fa fa-plus" ></i></span>
-              </ng-template>
-              
-              </e-column>
-              
-                <e-column field='jobName' headerText='Job Opening ID' width="125" >
-                 
-                </e-column>
-                <e-column field='jobtitle' headerText='Job Title' width="250" >
-                  <!-- <ng-template #template  let-data>
-                    <a (click)="showDetails(data)" [routerLink]="">{{ data.jobtitle }}</a>
-                </ng-template> -->
-                </e-column>
-                <e-column field='createdByName' headerText='Created By' width="200" ></e-column>
-                <e-column field='createdDate' headerText='Created Date' width="200" >
-                  <ng-template #template let-data>
-                    {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
-                  </ng-template>
-                </e-column>
-                <e-column field='modifiedName' headerText='Modified By' width="200" ></e-column>
-                <e-column field='modifiedDate' headerText='modifiedDate' width="200" >
-                  <ng-template #template let-data>
-                    {{ utilities.convertToLocalDate(data.modifiedDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
-                  </ng-template>
-                </e-column>
-                <e-column field='assaignedTo' headerText='Assaigned Recruiter(s)' width="200" ></e-column>
-                <e-column field='targetdate' headerText='Target Date' width="200" >
-                  <ng-template #template  let-data>
-                    {{ data.targetdate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
-                </ng-template>
-                </e-column>
-                <e-column field='status' headerText='Job Opening Status' width="200" ></e-column>
-                <e-column field='city' headerText='City' width="200" ></e-column>
-                <e-column field='client' headerText='Client Name' width="200" ></e-column>
-                <e-column field='contactName' headerText='Contact Name' width="200" ></e-column>
-                <e-column field='accountManager' headerText='Account Manager' width="200" ></e-column>
-            </e-columns>
-          </ejs-grid>
-  </div>
+  <ejs-grid #grid [dataSource]='openings' [childGrid]='childGrid' [toolbar]='toolbarOptions'
+            [allowExcelExport]='true' (toolbarClick)='toolbarClick($event)' [editSettings]='editSettings'
+            [pageSettings]='pageSettings' [allowSorting]='true' (recordDoubleClick)="rowClick($event)"
+            (actionBegin)='onDataBound($event)'>
+    <e-columns>
+      <e-column width="60">
+        <ng-template #template let-data>
+          <span (click)="Edit(data)" *ngIf="data.canEdit"><i class="fa fa-edit"></i></span>
+
+        </ng-template>
+
+      </e-column>
+      <e-column width="60">
+        <ng-template #template let-data>
+          <span (click)="AddCandidate(data)"><i class="fa fa-plus"></i></span>
+        </ng-template>
+
+      </e-column>
+
+      <e-column field='jobName' headerText='Job Opening ID' width="125">
+
+      </e-column>
+      <e-column field='jobtitle' headerText='Job Title' width="250">
+        <!-- <ng-template #template  let-data>
+            <a (click)="showDetails(data)" [routerLink]="">{{ data.jobtitle }}</a>
+        </ng-template> -->
+      </e-column>
+      <e-column field='createdByName' headerText='Created By' width="200"></e-column>
+      <e-column field='createdDate' headerText='Created Date' width="200">
+        <ng-template #template let-data>
+          {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+        </ng-template>
+      </e-column>
+      <e-column field='modifiedName' headerText='Modified By' width="200"></e-column>
+      <e-column field='modifiedDate' headerText='modifiedDate' width="200">
+        <ng-template #template let-data>
+          {{ utilities.convertToLocalDate(data.modifiedDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+        </ng-template>
+      </e-column>
+      <e-column field='assaignedTo' headerText='Assaigned Recruiter(s)' width="200"></e-column>
+      <e-column field='targetdate' headerText='Target Date' width="200">
+        <ng-template #template let-data>
+          {{ data.targetdate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+        </ng-template>
+      </e-column>
+      <e-column field='status' headerText='Job Opening Status' width="200"></e-column>
+      <e-column field='city' headerText='City' width="200"></e-column>
+      <e-column field='client' headerText='Client Name' width="200"></e-column>
+      <e-column field='contactName' headerText='Contact Name' width="200"></e-column>
+      <e-column field='accountManager' headerText='Account Manager' width="200"></e-column>
+    </e-columns>
+  </ejs-grid>
+  <ejs-pager [pageSize]='pageSettings.pageSize' [pageCount]='pageSettings.pageCount' [totalRecordsCount]='pageSettings.totalRecordsCount'
+             [pageSizes]="pageSizes" (click)="onPageChange($event)" (dropDownChanged)="onPageSizeChange($event)">
+  </ejs-pager>
+</div>

@@ -10,8 +10,8 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  getUsers() {
-    return this.http.get(environment.apiUrl + 'Users');
+  getUsers(req) {
+    return this.http.post(environment.apiUrl + 'Users/GetUsers', req);
   }
 
   adduser(user: User) {

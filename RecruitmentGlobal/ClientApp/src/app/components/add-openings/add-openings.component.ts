@@ -109,14 +109,6 @@ export class AddOpeningsComponent implements OnInit {
         }
       });
 
-    // this.commonService.getMasterData(ApiEndPoints.cities).subscribe((res: any) => {
-    //   this.cities = res;
-    // });
-
-    // this.commonService.getMasterData(ApiEndPoints.states).subscribe((res: any) => {
-    //   this.states = res;
-    // });
-
     this.commonService
       .getCountriesByUserId()
       .subscribe((res: ServiceResponse) => {

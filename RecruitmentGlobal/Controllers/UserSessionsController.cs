@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -22,14 +23,15 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/UserSessions
-        [HttpGet]
-        public async Task<ServiceResponse<IEnumerable<UserSessionView>>> GetUserSession()
+        [HttpPost]
+        [Route("GetUserSessions")]
+        public async Task<ServiceResponse<PagedList<UserSessionView>>> GetUserSession(CustomPagingRequest request)
         {
-            var response = new ServiceResponse<IEnumerable<UserSessionView>>();
+            var response = new ServiceResponse<PagedList<UserSessionView>>();
             try
             {
                 var user = _context.Users.Find(LoggedInUser);
-                response.Data = await (from x in _context.UserSession
+                var query = (from x in _context.UserSession
                                        join y in _context.Users on x.userid equals y.id
                                        where (y.roleId == (int)Roles.SuperAdmin) || ((y.roleId == (int)Roles.Recruiter) && y.country == user.country)
                                        select new UserSessionView()
@@ -40,7 +42,34 @@ namespace RecruitmentApi.Controllers
                                            name = Common.GetFullName(y),
                                            outTime = x.outTime,
                                            minutes = x.outTime == null ? 0 : (x.outTime.Value - x.inTime).TotalMinutes
-                                       }).AsQueryable().ToListAsync();
+                                       }).AsQueryable();
+                switch (request.sort)
+                {
+                    case "userid":
+                    case "name":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.userid) : query.OrderBy(x => x.userid));
+                        break;
+                    case "sessionId":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.sessionId) :
+                            query.OrderBy(x => x.sessionId));
+                        break;
+                    case "inTime":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.inTime) : query.OrderBy(x => x.inTime));
+                        break;
+                  
+                    case "outTime":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.outTime) : query.OrderBy(x => x.outTime));
+                        break;
+                    case "minutes":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.minutes) : query.OrderBy(x => x.minutes));
+                        break;
+                   
+                    default:
+                        break;
+                }
+
+                response.Data = new PagedList<UserSessionView>(
+                query, request);
                 response.Success = true;
                 response.Message = "Retrived";
             }

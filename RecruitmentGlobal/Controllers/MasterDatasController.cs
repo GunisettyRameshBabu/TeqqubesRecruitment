@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -24,13 +25,14 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/MasterDatas
-        [HttpGet]
-        public async Task<ServiceResponse<IEnumerable<MasterDataView>>> GetMasterData()
+        [HttpPost]
+        [Route("GetMasterData")]
+        public async Task<ServiceResponse<PagedList<MasterDataView>>> GetMasterData(CustomPagingRequest request)
         {
-            var response = new ServiceResponse<IEnumerable<MasterDataView>>();
+            var response = new ServiceResponse<PagedList<MasterDataView>>();
             try
             {
-                response.Data = await (from x in _context.MasterData
+                var query =  (from x in _context.MasterData
                                        join y in _context.MasterDataType on x.type equals y.id
                                        join c in _context.Users on x.createdBy equals c.id
                                        join m in _context.Users on x.modifiedBy equals m.id into modifies
@@ -47,8 +49,42 @@ namespace RecruitmentApi.Controllers
                                             name = x.name,
                                             type = x.type,
                                             typeName = y.name
-                                       }).AsQueryable().ToListAsync();
-                        ;
+                                       }).AsQueryable();
+                switch (request.sort)
+                {
+                    case "type":
+                    case "typeName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.type) : query.OrderBy(x => x.type));
+                        break;
+                    case "modifiedBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) :
+                            query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "createdBy":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdBy) : query.OrderBy(x => x.createdBy));
+                        break;
+                    case "createdDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdDate) : query.OrderBy(x => x.createdDate));
+                        break;
+                    case "modifiedName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) : query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "modifiedDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedDate) : query.OrderBy(x => x.modifiedDate));
+                        break;
+                    case "id":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.id) : query.OrderBy(x => x.id));
+                        break;
+                    case "name":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.name) : query.OrderBy(x => x.name));
+                        break;
+
+                    default:
+                        break;
+                }
+
+                response.Data = new PagedList<MasterDataView>(
+                query, request);
                 response.Success = true;
                 response.Message = "Data Retrived";
             }
@@ -95,7 +131,15 @@ namespace RecruitmentApi.Controllers
                 
                 if (Enum.IsDefined(typeof(MasterDataTypes), id))
                 {
-                    response.Data = await _context.MasterData.Where(x => x.type == id || (includeDefault ? x.type == (int) MasterDataTypes.Common : true)).OrderByDescending(x => x.type).ToListAsync();
+                    response.Data = await _context.MasterData.Where(x => x.type == id).OrderByDescending(x => x.type).ToListAsync();
+                    if (includeDefault)
+                    {
+                        var list = await _context.MasterData.Where(x => x.type == (int)MasterDataTypes.Common).ToListAsync();
+                        foreach (var item in list)
+                        {
+                            response.Data.Insert(0, item);
+                        }
+                    }
                     if (response.Data == null)
                     {
                         response.Success = false;

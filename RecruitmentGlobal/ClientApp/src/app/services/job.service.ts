@@ -8,9 +8,9 @@ import { environment } from 'src/environments/environment';
 export class JobService {
   constructor(private http: HttpClient) {}
 
-  getJobOpenings(type) {
-    return this.http.get(
-      environment.apiUrl + 'Openings/GetOpeningsByCountry/' + type
+  getJobOpenings(req) {
+    return this.http.post(
+      environment.apiUrl + 'Openings/GetOpeningsByCountry/' + req.type,req
     );
   }
 
@@ -112,9 +112,9 @@ export class JobService {
     );
   };
 
-  public GetRecruitCare() {
-    return this.http.get(
-      environment.apiUrl + 'RecruitCares/GetRecruitCareByMe'
+  public GetRecruitCare(req) {
+    return this.http.post(
+      environment.apiUrl + 'RecruitCares/GetRecruitCareByMe', req
     );
   }
 

@@ -22,7 +22,8 @@ export class ClientsComponent implements OnInit {
   editSettings: { allowEditing: boolean; allowAdding: boolean; mode: string };
   toolbar: string[];
   masterdata = [];
-  pageSettings: { pageSizes: boolean; pageSize: number };
+  pageSizes: any = [15, 25, 50, 100];
+  pageSettings: any = { pageSizes: true, pageSize: 15, currentPage: 1, pageCount: 5, sort: 'firstName', sortOrder: 'Ascending' };
   masterTypes = [];
   masterItem: any;
   constructor(
@@ -36,7 +37,6 @@ export class ClientsComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle('Qube Connect - Clients Master');
     this.modal.closeAll();
-    this.pageSettings = { pageSizes: true, pageSize: 10 };
     this.masterDataService.getMasterDataType().subscribe((res: ServiceResponse) => {
       if (res.success) {
         this.masterTypes = res.data;
@@ -54,9 +54,10 @@ export class ClientsComponent implements OnInit {
   }
 
   getData() {
-    this.masterDataService.getClients().subscribe((res: ServiceResponse) => {
+    this.masterDataService.getClients({ size: this.pageSettings.pageSize, page: this.pageSettings.currentPage, sort: this.pageSettings.sort, sortOrder: this.pageSettings.sortOrder }).subscribe((res: ServiceResponse) => {
       if (res.success) {
-        this.masterdata = res.data;
+        this.pageSettings.totalRecordsCount = res.data.totalItems;
+        this.masterdata = res.data.list;
       } else {
         this.alertService.error(res.message);
       }
@@ -98,6 +99,28 @@ export class ClientsComponent implements OnInit {
         this.getData();
       }
     });
+  }
+
+  onDataBound(args: any): void {
+    if (args.requestType == "sorting") {
+      this.pageSettings.sort = args.columnName;
+      this.pageSettings.sortOrder = args.direction;
+      this.getData();
+    }
+  }
+
+  onPageChange(args: any): void {
+    if (args.currentPage) {
+      this.pageSettings.currentPage = args.currentPage;
+      this.getData();
+    }
+  }
+
+  onPageSizeChange(args: any): void {
+    if (this.pageSettings.pageSize != args.pageSize) {
+      this.pageSettings.pageSize = args.pageSize;
+      this.getData();
+    }
   }
 
 }
