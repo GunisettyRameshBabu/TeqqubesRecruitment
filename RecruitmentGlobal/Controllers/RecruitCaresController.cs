@@ -137,26 +137,27 @@ namespace RecruitmentApi.Controllers
             {
                 var user = _context.Users.FirstOrDefault(x => x.id == LoggedInUser);
                 var query = (from x in _context.RecruitCare
-                                       join y in _context.Openings on x.jobid equals y.id
-                                       join s in _context.MasterData on x.status equals s.id
-                                       join c in _context.Users on x.createdBy equals c.id
-                                       join m in _context.Users on x.modifiedBy equals m.id into modifiedUsers
-                                       from m in modifiedUsers.DefaultIfEmpty()
-                                       join n in _context.MasterData on x.noticePeriod equals n.id into notices
-                                       from n in notices.DefaultIfEmpty()
-                                       join t in _context.MasterData on x.totalExp equals t.id 
-                                       join r in _context.MasterData on x.relavantExp equals r.id
-                                       join b in _context.MasterData on x.bestWayToReach equals b.id into bestways
-                                       from b in bestways.DefaultIfEmpty()
-                                       join v in _context.MasterData on x.visaType equals v.id into visaTypes
-                                       from v in visaTypes.DefaultIfEmpty()
-                                       join h in _context.MasterData on x.highestQualification equals h.id into qualifications
-                                       from h in qualifications.DefaultIfEmpty()
-                                       join st in _context.State on x.state equals st.Id
-                                       join ci in _context.Citys on x.city equals ci.Id
-                                       join co in _context.Countries on y.country equals co.Id
-                                       where ( user != null && user.roleId == (int)Roles.SuperAdmin ) || ( x.createdBy == LoggedInUser || x.modifiedBy == LoggedInUser)
-                                       select new RecruitCareView()
+                             join y in _context.Openings on x.jobid equals y.id
+                             join s in _context.MasterData on x.status equals s.id
+                             join c in _context.Users on x.createdBy equals c.id
+                             join m in _context.Users on x.modifiedBy equals m.id into modifiedUsers
+                             from m in modifiedUsers.DefaultIfEmpty()
+                             join n in _context.MasterData on x.noticePeriod equals n.id into notices
+                             from n in notices.DefaultIfEmpty()
+                             join t in _context.MasterData on x.totalExp equals t.id
+                             join r in _context.MasterData on x.relavantExp equals r.id
+                             join b in _context.MasterData on x.bestWayToReach equals b.id into bestways
+                             from b in bestways.DefaultIfEmpty()
+                             join v in _context.MasterData on x.visaType equals v.id into visaTypes
+                             from v in visaTypes.DefaultIfEmpty()
+                             join h in _context.MasterData on x.highestQualification equals h.id into qualifications
+                             from h in qualifications.DefaultIfEmpty()
+                             join st in _context.State on x.state equals st.Id
+                             join ci in _context.Citys on x.city equals ci.Id
+                             join co in _context.Countries on y.country equals co.Id
+                             where (user != null && user.roleId == (int)Roles.SuperAdmin) || (x.createdBy == LoggedInUser || x.modifiedBy == LoggedInUser) ||
+                             (user != null && user.roleId == (int)Roles.TeamLead && y.country == user.country ? true : false )
+                             select new RecruitCareView()
                                        {
                                            jobid = y.id,
                                            jobName = y.jobid,
