@@ -1,57 +1,64 @@
 <div class="e-custom-card bg-1 custom-padding padding-bottom">
-    <h5> Candidates <i class="fa fa-close float-right" (click)="close()"></i> </h5>
-    <ejs-grid #grid [dataSource]='candidates' [toolbar]='toolbar' 
-    [allowExcelExport]='true' (toolbarClick)='toolbarClick($event)' [allowSorting]='true'>
-        <e-columns>
-            
-            <e-column field='firstName' headerText='First Name' width="150" >
-             
-            </e-column>
-            <e-column field='lastName' headerText="Last Name" width="150">
-             
-            </e-column>
-            <e-column field='middleName' headerText='Middle Name' width="150"></e-column>
-            <e-column field='phone' headerText='Phone' width="150">
-                
-             
-            </e-column>
-            <e-column field='statusName' headerText='Status' width="150">
-    
-                 </e-column>
-            <e-column field='email' headerText='Email' width="150">
-    
-            </e-column>
-            <e-column field="createdByName" headerText="Created By" width="200"></e-column>
-            <e-column field="createdDate" headerText="Created Date" width="200">
-              <ng-template let-data>
-                {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
-              </ng-template>
-            </e-column>
-            <e-column field="modifiedName" headerText="Modified By" width="200"></e-column>
-            <e-column field="modifiedDate" headerText="Modified Date" width="200">
-              <ng-template let-data>
-                {{ data.modifedDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
-              </ng-template>
-            </e-column>
-            <e-column field='resume' headerText='Resume' width="200">
-             
-            </e-column>
-            <e-column field="stateName" headerText="State" width="200">
-            </e-column>
-            <e-column field="cityName" headerText="City" width="200">
-            </e-column>
-            <e-column field="totalExpName" headerText="Total Experience" width="200">
-            </e-column>
-            <e-column field="relavantExpName" headerText="Relavant Experience" width="200">
-            </e-column>
-            <e-column field="bestWayToReachName" headerText="Best Way to Reach" width="200">
-            </e-column>
-            <e-column field="visaTypeName" headerText="VISA Type" width="200">
-            </e-column>
-            <e-column field="highestQualificationName" headerText="Highest qualification" width="200">
-            </e-column>
-          
-        </e-columns>
-         </ejs-grid>
-         
+  <h5> Candidates <i class="fa fa-close float-right" (click)="close()"></i> </h5>
+  <ejs-grid #grid [dataSource]='candidates' [toolbar]='toolbar'
+            [allowExcelExport]='true' (toolbarClick)='toolbarClick($event)' [allowSorting]='true' (actionBegin)='onDataBound($event)'>
+    <e-columns>
+
+      <e-column field='firstName' headerText='First Name' width="150">
+
+      </e-column>
+      <e-column field='lastName' headerText="Last Name" width="150">
+
+      </e-column>
+      <e-column field='middleName' headerText='Middle Name' width="150"></e-column>
+      <e-column field='phone' headerText='Phone' width="150">
+
+
+      </e-column>
+      <e-column field='statusName' headerText='Status' width="150">
+
+      </e-column>
+      <e-column field='email' headerText='Email' width="150">
+
+      </e-column>
+      <e-column field="createdByName" headerText="Created By" width="200"></e-column>
+      <e-column field="createdDate" headerText="Created Date" width="200">
+        <ng-template let-data>
+          {{ utilities.convertToLocalDate(data.createdDate) | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+        </ng-template>
+      </e-column>
+      <e-column field="modifiedName" headerText="Modified By" width="200"></e-column>
+      <e-column field="modifiedDate" headerText="Modified Date" width="200">
+        <ng-template let-data>
+          {{ data.modifedDate | date : 'EEE dd/MM/yyyy hh:mm:ss a' }}
+        </ng-template>
+      </e-column>
+      <e-column field='resume' headerText='Resume' width="200">
+
+      </e-column>
+      <e-column field="stateName" headerText="State" width="200">
+      </e-column>
+      <e-column field="cityName" headerText="City" width="200">
+      </e-column>
+      <e-column field="totalExpName" headerText="Total Experience" width="200">
+      </e-column>
+      <e-column field="relavantExpName" headerText="Relavant Experience" width="200">
+      </e-column>
+      <e-column field="bestWayToReachName" headerText="Best Way to Reach" width="200">
+      </e-column>
+      <e-column field="visaTypeName" headerText="VISA Type" width="200">
+      </e-column>
+      <e-column field="highestQualificationName" headerText="Highest qualification" width="200">
+      </e-column>
+      <e-column field="currentCTC" headerText="Current CTC" width="150">
+      </e-column>
+      <e-column field="expectedCTC"
+                headerText="Expected CTC"
+                width="150">
+      </e-column>
+    </e-columns>
+  </ejs-grid>
+  <ejs-pager [pageSize]='pageSettings.pageSize' [pageCount]='pageSettings.pageCount' [totalRecordsCount]='pageSettings.totalRecordsCount'
+             [pageSizes]="pageSizes" (click)="onPageChange($event)" >
+  </ejs-pager>
 </div>

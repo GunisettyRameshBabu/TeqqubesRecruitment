@@ -138,17 +138,9 @@ namespace RecruitmentApi.Controllers
                                           name = x.Name
                                       }).AsQueryable().ToListAsync();
 
-                if (includeDefaults)
+                if (!includeDefaults)
                 {
-                    var items = await _context.MasterData.Where(x => x.type == (int)MasterDataTypes.Common).ToListAsync();
-                    foreach (var item in items)
-                    {
-                        response.Data.Add(new DropdownModel()
-                        {
-                            id = item.id,
-                            name = item.name
-                        });
-                    }
+                    response.Data = response.Data.Where(x => x.name.ToLower() != "yet to grap").ToList();
                 }
                 response.Success = true;
                 response.Message = "Success";

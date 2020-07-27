@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RecruitmentApi.Data;
 using RecruitmentApi.Models;
+using RecruitmentGlobal.Models;
 
 namespace RecruitmentApi.Controllers
 {
@@ -187,10 +188,10 @@ namespace RecruitmentApi.Controllers
         }
 
         // GET: api/JobCandidates/5
-        [HttpGet("GetJobCandidatesByStatus/{id}")]
-        public async Task<ServiceResponse<List<JobCandidatesView>>> GetJobCandidatesByStatus(int id)
+        [HttpPost("GetJobCandidatesByStatus/{id}")]
+        public async Task<ServiceResponse<PagedList<JobCandidatesView>>> GetJobCandidatesByStatus(int id, CustomPagingRequest request)
         {
-            var response = new ServiceResponse<List<JobCandidatesView>>();
+            var response = new ServiceResponse<PagedList<JobCandidatesView>>();
             try
             {
                 var user = _context.Users.Find(LoggedInUser);
@@ -259,7 +260,7 @@ namespace RecruitmentApi.Controllers
                                            modifiedByName = Common.GetFullName(md)
                                        }).AsQueryable().ToListAsync();
 
-                var recruits = await (from x in _context.RecruitCare
+                var query = (from x in _context.RecruitCare
                                       join y in _context.Openings on x.jobid equals y.id
                                       join s in _context.MasterData on x.status equals s.id
                                       join c in _context.Users on x.createdBy equals c.id
@@ -318,10 +319,121 @@ namespace RecruitmentApi.Controllers
                                           visaTypeName = v.name,
                                           cityName = ci.Name,
                                           stateName = st.Name,
-                                          countryCode = co.Code
-                                      }).AsQueryable().ToListAsync();
+                                          countryCode = co.Code,
+                                          currentCTC = x.currentCTC,
+                                          expectedCTC = x.expectedCTC
+                                      }).AsQueryable();
 
-                response.Data = candidates.Concat(recruits).ToList();
+                switch (request.sort)
+                {
+                    case "jobid":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.id) : query.OrderBy(x => x.id));
+                        break;
+                    case "jobName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.jobName) :
+                            query.OrderBy(x => x.jobName));
+                        break;
+                    case "createdBy":
+                    case "createdByName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdBy) : query.OrderBy(x => x.createdBy));
+                        break;
+                    case "createdDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.createdDate) : query.OrderBy(x => x.createdDate));
+                        break;
+                    case "modifiedBy":
+                    case "modifiedName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedBy) : query.OrderBy(x => x.modifiedBy));
+                        break;
+                    case "modifiedDate":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.modifiedDate) : query.OrderBy(x => x.modifiedDate));
+                        break;
+                    case "id":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.id) : query.OrderBy(x => x.id));
+                        break;
+                    case "email":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.email) : query.OrderBy(x => x.email));
+                        break;
+                    case "firstName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.firstName) : query.OrderBy(x => x.firstName));
+                        break;
+                    case "middleName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.middleName) : query.OrderBy(x => x.middleName));
+                        break;
+                    case "lastName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.lastName) : query.OrderBy(x => x.lastName));
+                        break;
+                    case "phone":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.phone) : query.OrderBy(x => x.phone));
+                        break;
+                    case "status":
+                    case "statusName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.status) : query.OrderBy(x => x.status));
+                        break;
+                    case "fileName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.fileName) : query.OrderBy(x => x.fileName));
+                        break;
+                    case "anyOfferExist":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.anyOfferExist) : query.OrderBy(x => x.anyOfferExist));
+                        break;
+                    case "bestWayToReach":
+                    case "bestWayToReachName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.bestWayToReach) : query.OrderBy(x => x.bestWayToReach));
+                        break;
+                    case "bestTimeToReach":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.bestTimeToReach) : query.OrderBy(x => x.bestTimeToReach));
+                        break;
+                    case "city":
+                    case "cityName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.city) : query.OrderBy(x => x.city));
+                        break;
+                    case "educationDetails":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.educationDetails) : query.OrderBy(x => x.educationDetails));
+                        break;
+                    case "expectedRatePerHour":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.expectedRatePerHour) : query.OrderBy(x => x.expectedRatePerHour));
+                        break;
+                    case "highestQualification":
+                    case "highestQualificationName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.highestQualification) : query.OrderBy(x => x.highestQualification));
+                        break;
+                    case "relavantExp":
+                    case "relavantExpName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.relavantExp) : query.OrderBy(x => x.relavantExp));
+                        break;
+                    case "rtr":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.rtr) : query.OrderBy(x => x.rtr));
+                        break;
+                    case "skypeid":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.skypeid) : query.OrderBy(x => x.skypeid));
+                        break;
+                    case "state":
+                    case "stateName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.state) : query.OrderBy(x => x.state));
+                        break;
+                    case "totalExp":
+                    case "totalExpName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.totalExp) : query.OrderBy(x => x.totalExp));
+                        break;
+                    case "visaType":
+                    case "visaTypeName":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.visaType) : query.OrderBy(x => x.visaType));
+                        break;
+                    case "countryCode":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.countryCode) : query.OrderBy(x => x.countryCode));
+                        break;
+                    case "currentCTC":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.currentCTC) : query.OrderBy(x => x.currentCTC));
+                        break;
+                    case "expectedCTC":
+                        query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.expectedCTC) : query.OrderBy(x => x.expectedCTC));
+                        break;
+                    default:
+                        break;
+                }
+
+                response.Data = new PagedList<JobCandidatesView>(
+                query, request);
+
                 response.Success = true;
                 response.Message = "Success";
             }

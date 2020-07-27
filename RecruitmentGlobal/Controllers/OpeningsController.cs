@@ -201,7 +201,9 @@ namespace RecruitmentApi.Controllers
                                                       visaTypeName = v.name,
                                                       cityName = ci.Name,
                                                       stateName = st.Name,
-                                                      countryCode = cu.Code
+                                                      countryCode = cu.Code,
+                                                      currentCTC = x.currentCTC,
+                                                      expectedCTC = x.expectedCTC
                                                   }).ToListAsync();
                 response.Success = true;
                 response.Message = "Success";

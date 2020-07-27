@@ -105,18 +105,12 @@ export class DashboardComponent implements OnInit , AfterViewInit {
     if (i.Value.Value == 0) {
       this.alertService.info('No records found');
     } else {
-      this.jobService.getJobCandidatesByStatus(i.Value.Key).subscribe((res: ServiceResponse) => {
-        if (res.success) {
-          this.modal.open(ViewCandidatesByStatusComponent, {
-            data: res.data,
-            hasBackdrop: true,
-            disableClose: false
-          });
-          console.log(res.data);
-        } else {
-          this.alertService.info(res.message);
-        }
+      this.modal.open(ViewCandidatesByStatusComponent, {
+        data: i.Value.Key,
+        hasBackdrop: true,
+        disableClose: false
       });
+     
     }
   
   }

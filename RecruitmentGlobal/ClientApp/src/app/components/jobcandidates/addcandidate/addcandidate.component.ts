@@ -102,7 +102,9 @@ export class AddcandidateComponent implements OnInit {
       bestTimeToReach: new FormControl(null),
       bestWayToReach: new FormControl(null),
       rtr: new FormControl(null),
-      highestQualification: new FormControl(null, Validators.required)
+      highestQualification: new FormControl(null, Validators.required),
+      currentCTC: new FormControl(),
+      expectedCTC: new FormControl()
     });
 
     this.jobGroup.reset(this.job);

@@ -134,17 +134,9 @@ namespace RecruitmentApi.Controllers
             try
             {
                 response.Data = await _context.Citys.Where(x => x.State == id).OrderBy(x => x.Name).ToListAsync();
-                if (includeDefaults)
+                if (!includeDefaults)
                 {
-                    var items = await _context.MasterData.Where(x => x.type == (int)MasterDataTypes.Common).ToListAsync();
-                    foreach (var item in items)
-                    {
-                        response.Data.Add(new City()
-                        {
-                            Name = item.name,
-                            Id = item.id
-                        });
-                    }
+                    response.Data = response.Data.Where(x => x.Name.ToLower() != "yet to grab").ToList();
                 }
                 response.Success = true;
                 response.Message = "Success";

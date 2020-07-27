@@ -71,9 +71,9 @@ export class JobService {
     );
   }
 
-  getJobCandidatesByStatus(id) {
-    return this.http.get(
-      environment.apiUrl + 'JobCandidates/GetJobCandidatesByStatus/'+ id
+  getJobCandidatesByStatus(id, req) {
+    return this.http.post(
+      environment.apiUrl + 'JobCandidates/GetJobCandidatesByStatus/'+ id,req
     );
   }
 

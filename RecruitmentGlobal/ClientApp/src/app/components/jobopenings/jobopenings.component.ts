@@ -112,6 +112,9 @@ export class JobopeningsComponent implements OnInit {
   onPageChange(args: any): void {
     if (args.currentPage) {
       this.pageSettings.currentPage = args.currentPage;
+      if (args.newProp && args.newProp.pageSize) {
+        this.pageSettings.pageSize = args.newProp.pageSize
+      }
       this.getData();
     }
   }
