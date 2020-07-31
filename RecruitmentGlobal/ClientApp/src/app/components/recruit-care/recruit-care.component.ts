@@ -33,7 +33,7 @@ export class RecruitCareComponent implements OnInit {
   public selectOptions: Object;
   user: User;
   pageSizes: any = [15, 25, 50, 100];
-  pageSettings: any = { pageSizes: true, pageSize: 15, currentPage: 1, pageCount : 5, sort: 'jobName' , sortOrder: 'Ascending' };
+  pageSettings: any = { pageSizes: true, pageSize: 15, currentPage: 1, pageCount : 5, sort: '' , sortOrder: 'Ascending' };
   constructor(
     private commonService: CommonService,
     private jobService: JobService,

@@ -271,6 +271,7 @@ namespace RecruitmentApi.Controllers
                         query = (request.sortOrder == "Descending" ? query.OrderByDescending(x => x.expectedCTC) : query.OrderBy(x => x.expectedCTC));
                         break;
                     default:
+                        query = query.OrderByDescending(x => x.createdDate);
                         break;
                 }
 

@@ -380,8 +380,8 @@ namespace RecruitmentApi.Controllers
                 var user = _context.Users.Find(LoggedInUser);
                 var candidateStatus = await (from x in _context.MasterData
                                   join y in _context.MasterDataType on x.type equals y.id
-                                  where y.name == "JobCandidateStatus"
-                                  select x).ToListAsync();
+                                  where y.name == "JobCandidateStatus" || y.name == "Common"
+                                             select x).ToListAsync();
 
                 var candidates = await (from x in _context.JobCandidates
                                         join j in _context.Openings on x.jobid equals j.id
